@@ -35,7 +35,7 @@ export default function Order(props){
     const classes = useStyles();
 
     const [orderData, setOrderData] = useState({});
-    console.log("Order 38: ", id);
+
     useEffect(() => {
         const getOrder = async () => {
             const abortController = new AbortController();
@@ -46,13 +46,13 @@ export default function Order(props){
         }
 
         getOrder();
-    }, [id])
+    }, [id, userContext.user])
     
     return <> 
         <Card variant='outlined'>
             <Grid container justify='flex-end'>
                 <Grid item xs={2}>
-                    <Typography variant='h6'>{orderData ? orderData.created? orderData.created : undefined : undefined}</Typography>
+                    <Typography className={classes.typ} variant='h6'>{orderData ? orderData.created? orderData.created : undefined : undefined}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Typography variant='h6'>{orderData ? orderData.price? orderData.price : undefined : undefined}</Typography>
@@ -65,7 +65,7 @@ export default function Order(props){
                 {
                     orderData && orderData.items instanceof Array ? 
                     orderData.items.map((item) => {
-                        return <Grid item xs={12}>
+                        return <Grid item xs={12} key={uuidv4()}>
                                 <OrderItem 
                                 pid={item.product._id}
                                 amount={item.amount} />

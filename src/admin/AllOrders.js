@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -20,7 +19,7 @@ export default function AllOrders(props){
     return <>
         <Grid container justify='center'>
             <Grid item>
-                <Typography variant='h6'>All Orders</Typography>
+                <Typography className={classes.typ} variant='h6'>All Orders</Typography>
             </Grid>
             <Grid item xs={12} />
 

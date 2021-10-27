@@ -179,7 +179,8 @@ const Header = withRouter(({history}) => {
     const logout = (e) => {
       auth.clearJWT();
       userContext.setUser(null);
-      history.push('/');
+      if(window !== null)
+        history.push('/');
     }
 
     const loggedIn = <> 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import MainRouter from './MainRouter';
-import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './theme';
 import auth from './auth/auth-helper';
@@ -22,6 +21,7 @@ function App() {
 
   const [openMessage, setOpenMessage] = useState(false);
   const [message, setMessage] = useState("");
+
 
   useEffect(() => {
     setUser(auth.isAuthenticated())
@@ -84,9 +84,7 @@ function App() {
                 {message}
             </Alert>
         </Snackbar>
-        <BrowserRouter> {/*change this to force reset for product page change */}
-        <MainRouter />
-        </BrowserRouter>
+          <MainRouter />
         </CartContext.Provider>
       </UserContext.Provider>
     </ThemeProvider>

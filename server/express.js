@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import App from '../src/App';
+import { StaticRouter } from "react-router";
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -38,26 +39,6 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, '../build')));
 
-app.get('/', (req, res) => {
-    // res.sendFile(path.join(__dirname,  '../build', 'index.html'));
-    // fs.readFile(
-    //     path.resolve('../build/index.html'),
-    //     'utf8',
-    //     (err, data) => {
-    //     if (err) {
-    //         console.log(err);
-    //         return res.status(500).send('Internal Server Error');
-    //     }
-    //     return res.send(
-    //         data.replace(
-    //         '<div id="root"></div>',
-    //         `<div id="root">${ReactDOMServer.renderToString(<App />)}</div>`
-    //         )
-    //     );
-    //     }
-    // );
-});
-
 app.use('/', userRoutes);
 app.use('/', authRoutes);
 app.use('/', shopRoutes);
@@ -65,9 +46,8 @@ app.use('/', paymentRoutes);
 app.use('/', adminRoutes);
 
 app.get('*', (req, res) => {
-    // res.json({
-    //     error: "Unknown"
-    // });
+
+    const context = {};
 
     fs.readFile(
         path.resolve('../build/index.html'),
@@ -77,12 +57,21 @@ app.get('*', (req, res) => {
             console.log(err);
             return res.status(500).send('Internal Server Error');
         }
-        return res.send(
-            data.replace(
-            '<div id="root"></div>',
-            `<div id="root">${ReactDOMServer.renderToString(<App />)}</div>`
-            )
-        );
+        try{
+            return res.send(
+                data.replace(
+                '<div id="root"></div>',
+                `<div id="root">${ReactDOMServer.renderToString(
+                    <StaticRouter location={req.url} context={context}>
+                        <App />
+                    </StaticRouter>
+                )}</div>`
+                )
+            );
+        }catch(e){
+            console.log(e);
+        }
+        
         }
     );
 });

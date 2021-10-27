@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { UserContext } from '../App';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AllProducts(props) {
 
+    const classes = useStyles();
+
     const [selectedShop, setSelectedShop] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedMinorCat, setSelectedMinorCat] = useState("");
@@ -43,7 +45,7 @@ export default function AllProducts(props) {
         <Card>
             <Grid container>
                 <Grid item xs={12}>
-                    <Typography variant='h4'>All Products</Typography>
+                    <Typography className={classes.typ} variant='h4'>All Products</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     {Shop(userContext, selectedShop, setSelectedShop)}
