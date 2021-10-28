@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const jayPurple = "#4e0166";
 const jayAqua = "#ebfffc";
@@ -12,7 +12,7 @@ const jayRed = "#d43f35";
 const jayGreen = "#07c700";
 const jayBlack = "#1f1f1f";
 
-export default createMuiTheme({
+export default createTheme({
     palette: {
         common: {
             purple: `${jayPurple}`,

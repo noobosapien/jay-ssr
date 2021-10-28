@@ -51,7 +51,8 @@ function large(classes){
     return <> 
     <Grid container spacing={0} direction="row" justify='center'>
         <Grid item xs={2}>
-            <img className={classes.adornment} src={FooterAdornment} alt='decorative slash'></img>
+            {/* <img className={classes.adornment} src={FooterAdornment} alt='decorative slash'></img> */}
+            <img className={classes.adornment} src={"https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/FooterRect.svg"} alt='decorative slash'></img>
         </Grid>
         <Grid item container direction="column" xs={2} justify="center" spacing={1} alignItems="center">
             <Grid item >

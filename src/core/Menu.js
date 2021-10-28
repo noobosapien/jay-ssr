@@ -9,7 +9,7 @@ import { mdiAccountCircle, mdiCartOutline, mdiLogout } from '@mdi/js';
 import Icon from '@mdi/react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+// import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -23,6 +23,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { UserContext } from '../App';
 import SearchBar from './SearchBar';
 import LoginNSignup from './MenuComps/LoginNSignup';
+import { useMediaQuery } from 'react-responsive';
 
 import logo from "../assets/images/logo.svg"
 
@@ -159,7 +160,7 @@ const Header = withRouter(({history}) => {
     const userContext = useContext(UserContext);
 
     const classes = useStyles();
-    const downSm = useMediaQuery('(max-width:600px)');
+    const downSm = useMediaQuery({query: '(max-width:600px)'});
 
     const [profileMenu, setProfileMenu] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -287,7 +288,8 @@ const Header = withRouter(({history}) => {
             <Grid container spacing={1} justify='flex-start'>
               <Grid item xs={10} sm={8} md={9} lg={4} className={classes.gridLogo}>
                 <Button disableRipple component={Link} to='/' className={classes.logoContainer}>
-                    <img className={classes.logo} alt="logo" src={logo}/>
+                    {/* <img className={classes.logo} alt="logo" src={logo}/> */}
+                    <img className={classes.logo} alt="logo" src={"https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/logo.svg"}/>
                 </Button>
               </Grid>
                 
