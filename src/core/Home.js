@@ -8,6 +8,7 @@ import Categories from './Categories';
 import Grid from '@material-ui/core/Grid';
 import Banner from './Banner';
 import ProductCarousel from './ProductCarousel';
+import Slide from '@material-ui/core/Slide';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -25,6 +26,11 @@ const useStyles = makeStyles(theme => ({
     message: {
         marginTop: '2%',
         marginBottom: '2%',
+        paddingLeft: '2%',
+        // background: 'rgb(89,0,126)',
+        background: 'linear-gradient(90deg, rgba(0,125,147,1) 0%, rgba(176,161,62,1) 96%)',
+        color: theme.palette.common.white,
+        borderRadius: '5%'
     },
     bannerItem: {
         [theme.breakpoints.down("sm")]: {
@@ -43,16 +49,18 @@ export default function Home(){
     return (<>
     <Grid container justify='center'>
         <Grid item xs={12} className={classes.bannerItem}>
-            {/* <Billboard /> */}
             <Banner />
         </Grid>
 
-        <Grid item xs={12} className={classes.productCarousel}>
-            {/* <ProductCarousel /> */}
-        </Grid>
         <Grid item xs={12}>
             <Card className={classes.card}>
-                <SnackbarContent className={classes.message} message="Jaytronics message"/>
+                <Slide direction="up" in mountOnEnter unmountOnExit
+                timeout={{
+                    enter: 500
+                }}>
+                    <SnackbarContent message="Browse a catalogue of 1000+ unique items!" className={classes.message} />
+                </Slide>
+                
                 <CardContent>
                     <ProductCarousel />
 

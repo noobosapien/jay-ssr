@@ -313,7 +313,7 @@ const Header = withRouter(({history}) => {
             <Grid container spacing={1} justify='flex-start'>
               <Grid item xs={10} sm={8} md={9} lg={4} className={classes.gridLogo}>
                 <Button disableRipple component={Link} to='/' className={classes.logoContainer}>
-                    <img className={classes.logo} alt="logo" src={logo}/>
+                    <img className={classes.logo} alt="logo" src={"https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/logo.svg"}/>
                 </Button>
               </Grid>
                 

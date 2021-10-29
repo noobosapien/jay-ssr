@@ -30,7 +30,7 @@ export default function Hot(props){
 
 
     return <>
-    <Typography variant='h5'>Hottest items</Typography>
+    <Typography style={{marginBottom: '10%'}} variant='h5'>Hottest items</Typography>
 
     <Carousel infiniteLoop autoPlay={true} className='carousel' dynamicHeight={true} showArrows={true}>
     {

@@ -28,7 +28,7 @@ export default function Latest(props){
     }, []);
 
     return <>
-    <Typography variant='h5'>Latest items</Typography>
+    <Typography style={{marginBottom: '10%'}} variant='h5'>Latest items</Typography>
     <Carousel infiniteLoop autoPlay={true} className='carousel' dynamicHeight={true} showArrows={true}>
         {
             items instanceof Array ?

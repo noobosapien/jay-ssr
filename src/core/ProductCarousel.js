@@ -10,13 +10,13 @@ export default function ProductCarousel(props){
 
     return <>
     <Grid container justify='space-evenly'>
-        <Grid item xs={2}>
+        <Grid item xs={5} md={2}>
             <Latest />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={5} md={2}>
             <Hot />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={8} md={2}>
             <MostBrought />
         </Grid>
     </Grid>

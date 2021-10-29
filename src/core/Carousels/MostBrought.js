@@ -28,7 +28,7 @@ export default function MostBrought(props){
     }, []);
 
     return <>
-    <Typography variant='h5'>Most brought items</Typography>
+    <Typography style={{marginBottom: '10%'}} variant='h5'>Most brought items</Typography>
 
     <Carousel infiniteLoop autoPlay={true} className='carousel' dynamicHeight={true} showArrows={true}>
     {
