@@ -5,24 +5,25 @@ import { useMediaQuery } from './helpers/useMediQuery';
 
 function large(){
     return <>
-        <img id="components" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/components.svg" alt="components text" />
+        <img id="components" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/components.png" alt="components text" />
         <img id="muchmore" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/muchmore.svg" alt="much more text" />
 
         <div id="redBlock" />
         <div id="greenBlock" />
         <div id="yellowBlock" />
 
-        <img id="carText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/automotivetext.svg" alt="car text" />
+        <img id="carText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/automotivetext.png" alt="car text" />
         <img id="car" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/SimpleYellowCarTopView.svg" alt="car" />
 
-        <img id="droneText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/dronetext.svg" alt="drone text" />
+        <img id="droneText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/dronetext.png" alt="drone text" />
         <img id="drone" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/drone.svg" alt="drone" />
 
-        <img id="electronicsText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/electronicstext.svg" alt="electronics text" />
+        <img id="electronicsText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/electronicstext.png" alt="electronics text" />
         <img id="rpi" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/RaspberryPi.svg" alt="microcontroller" />
 
-        <img id="electricalText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/electricaltext.svg" alt="electrical text" />
-        <img id="bulb" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/bulb.svg" alt="bulb" />
+        <img id="electricalText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/electricaltext.png" alt="electrical text" />
+        <img id="bulbGlow" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/bulb.svg" alt="bulb" />
+        <img id="bulbDim" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/bulbGlow.svg" alt="bulb" />
     </>
 }
 
@@ -42,7 +43,9 @@ function medium(){
         <img id="mdrpi" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/RaspberryPi.svg" alt="microcontroller" />
 
         <img id="mdelectricalText" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/electricaltext.png" alt="electrical text" />
-        <img id="mdbulb" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/bulb.svg" alt="bulb" />
+        <img id="mdbulbGlow" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/bulb.svg" alt="bulb" />
+        <img id="mdbulbDim" src="https://jaytronics.s3.ap-southeast-2.amazonaws.com/carousel/bulbGlow.svg" alt="bulb" />
+
 
     </>
 }
@@ -64,11 +67,11 @@ export default function Banner() {
 
     return(
         <>
-            <div className={xs || sm ? "banner-xs" : "banner"}>
+            <header className={xs || sm ? "banner-xs" : "banner"}>
                 {
                     lg || xl ? large() : md || sm ? medium() : xs ? xtraSmall() : <> </>
                 }
-            </div>
+            </header>
         </>
     );
 }

@@ -4,20 +4,26 @@
   width: auto;
   min-width: 100%;
   height: 500px;
-  /* background-color: lawngreen; */
-  background: linear-gradient(90deg, rgba(60,0,86,1) 0%, rgba(38,0,55,1) 100%);
+
+  background: rgb(0,125,147);
+  background: radial-gradient(circle, rgba(0,125,147,1) 0%, rgba(66,0,99,1) 100%);
 
   position: relative;
   margin-top: 6%;
   margin-bottom: 2%;
+  animation: Banner 4.0s .75s cubic-bezier(0, 0.75, 0, 1) forwards;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 .banner-xs {
   width: auto;
   min-width: 100%;
   height: 300px;
-  /* background-color: lawngreen; */
-  background: linear-gradient(90deg, rgba(60,0,86,1) 0%, rgba(38,0,55,1) 100%);
+
+  background: rgb(0,125,147);
+  background: radial-gradient(circle, rgba(0,125,147,1) 0%, rgba(66,0,99,1) 100%);
+
+  animation: Banner 4.0s .75s cubic-bezier(0, 0.75, 0, 1) forwards;
 
   position: relative;
   margin-top: 6%;
@@ -59,7 +65,8 @@
   /* left: 900px; */
   left: 0%;
   /* top: 100px; */
-  top: 65%;
+  top: 75%;
+  animation: redBlock 2s .5s ease-in-out forwards;
 }
 
 #greenBlock {
@@ -74,6 +81,7 @@
   left: 35%;
   /* top: 100px; */
   bottom: 0%;
+  animation: greenBlock 2s .5s ease-in-out forwards;
 }
 
 #yellowBlock {
@@ -88,6 +96,7 @@
   right: 0%;
   /* top: 100px; */
   top: -10%;
+  animation: yellowBlock 2s .5s ease-in-out forwards;
 }
 
 #car {
@@ -126,7 +135,7 @@
   left: 20%;
   top: 70%;
 
-  animation: drone 3s .5s cubic-bezier(.83,.3,.4,.73) infinite forwards;
+  animation: drone 10s .5s cubic-bezier(.83,.3,.4,.73) infinite forwards;
 }
 
 #droneText {
@@ -164,7 +173,7 @@
   top: 55%;
 }
 
-#bulb {
+#bulbGlow {
   width: auto;
   height: auto;
   max-width: 50px;
@@ -172,6 +181,23 @@
   position: absolute;
   left: 10%;
   top: 10%;
+  z-index: 32;
+
+  animation:bulbGlow 4s .5s cubic-bezier(.83,.3,.4,.73) infinite forwards;
+
+}
+
+#bulbDim {
+  width: auto;
+  height: auto;
+  max-width: 50px;
+  min-width: 50px;
+  position: absolute;
+  left: 10%;
+  top: 10%;
+
+  animation: bulbDim 4s .5s linear infinite forwards;
+
 }
 
 #electricalText {
@@ -247,7 +273,7 @@
   left: 10%;
   top: 70%;
 
-  animation: drone 3s .5s cubic-bezier(.83,.3,.4,.73) infinite forwards;
+  animation: drone 10s .5s cubic-bezier(.83,.3,.4,.73) infinite forwards;
 }
 
 #mddroneText {
@@ -285,7 +311,20 @@
   top: 55%;
 }
 
-#mdbulb {
+#mdbulbGlow {
+  width: auto;
+  height: auto;
+  max-width: 25px;
+  min-width: 25px;
+  position: absolute;
+  left: 10%;
+  top: 25%;
+  z-index: 32;
+
+  animation:bulbGlow 4s .5s cubic-bezier(.83,.3,.4,.73) infinite forwards;
+}
+
+#mdbulbDim {
   width: auto;
   height: auto;
   max-width: 25px;
@@ -309,6 +348,79 @@
 
 /* Animations */
 
+@keyframes bulbGlow {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bulbDim {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes Banner {
+  0% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  100% {
+    /* transform: skewY(-1deg); */
+    clip-path: polygon(0 4%, 100% -4%, 100% 97%, 0 104%);
+  }
+
+}
+
+@keyframes redBlock {
+  0% {
+      transform: translateY(0%);
+  }
+
+  100% {
+      transform: translateY(-30%);
+  }
+
+}
+
+@keyframes greenBlock {
+  0% {
+      transform: translateX(0%);
+  }
+
+  100% {
+      transform: translateX(10%);
+  }
+
+}
+
+@keyframes yellowBlock {
+  0% {
+      transform: translateY(0%);
+  }
+
+  100% {
+      transform: translateY(20%);
+  }
+
+}
+
 @keyframes leftRight {
   0% {
       transform: translateY(0%) rotateZ(90deg);
@@ -326,14 +438,14 @@
 
 @keyframes drone {
   0% {
-      transform: rotateZ(0deg) translateY(0%);
+      transform: rotateZ(0deg) translateY(0%) translateX(0%);
   }
 
   50% {
-      transform: rotateZ(360deg) translateY(0%);
+      transform: rotateZ(360deg) translateY(10%) translateX(40%);
   }
 
   100% {
-      transform: rotateZ(0deg) translateY(0%);
+      transform: rotateZ(0deg) translateY(0%) translateX(0%);
   }
 }
