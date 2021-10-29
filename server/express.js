@@ -66,6 +66,8 @@ async function handleRender(req, res, next){
     const css = sheets.toString();
 
     const fullHtml = await renderFullPage(html, css);
+    // console.log(`\n\n\n\n\n\n${fullHtml}\n\n\n\n\n`);
+
     res.send(fullHtml);
 }
 
@@ -73,20 +75,25 @@ async function renderFullPage(html, css){
 
     try{
         const data = await fs.readFile(path.resolve('../build/_index.html'), 'utf8');
+
+        var result = "";
         
-        await data.replace(
+        result = await data.replace(
         '<div id="root"></div>',
         `<div id="root">
             ${html}
         )}</div>`);
 
-        await data.replace(
+        result = await result.replace(
         '<style id="jss-server-side"></style>',
         `<style id="jss-server-side">
             ${css}
         )}</style>`);
 
-        return data;
+        // console.log(`\n\n\n\n\n\n${result}\n\n\n\n\n`);
+
+
+        return result;
     }catch(e){
         return e;
     }
