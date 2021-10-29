@@ -90,9 +90,6 @@ async function renderFullPage(html, css){
             ${css}
         )}</style>`);
 
-        // console.log(`\n\n\n\n\n\n${result}\n\n\n\n\n`);
-
-
         return result;
     }catch(e){
         return e;

@@ -40,6 +40,11 @@ const useStyles = makeStyles(theme => ({
       autoComplete: {
         color: theme.palette.common.gray,
         fontSize: 16,
+      },
+      listBox: {
+        fontSize: '1.2rem',
+        color: theme.palette.common.gray,
+        overflow: 'visible'
       }
 }));
 
@@ -100,7 +105,8 @@ return (
         <Autocomplete
         classes={{
           input: classes.autoComplete,
-          root: classes.clearIndicator
+          root: classes.clearIndicator,
+          listbox: classes.listBox
         }}
         freeSolo
         id="product-search"

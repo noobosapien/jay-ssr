@@ -9,7 +9,7 @@ import { mdiAccountCircle, mdiCartOutline, mdiLogout } from '@mdi/js';
 import Icon from '@mdi/react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -21,9 +21,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { UserContext } from '../App';
+import { CartContext } from '../App';
 import SearchBar from './SearchBar';
 import LoginNSignup from './MenuComps/LoginNSignup';
-import { useMediaQuery } from 'react-responsive';
+import Badge from '@material-ui/core/Badge';
 
 import logo from "../assets/images/logo.svg"
 
@@ -146,6 +147,15 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    right: -1,
+    top: 10,
+    border: `4px solid ${theme.palette.common.blue}`,
+    padding: '0 4px',
+  },
+}))(Badge);
+
 const loggedInItems = [
   {name: 'Account', path: '/user/account', icon: <AccountCircleIcon />},
   {name: 'Cart', path: '/cart', icon: <ShoppingCartIcon />},
@@ -158,9 +168,10 @@ const loggedOutItems = [
 const Header = withRouter(({history}) => {
 
     const userContext = useContext(UserContext);
+    const cartContext = useContext(CartContext);
 
     const classes = useStyles();
-    const downSm = useMediaQuery({query: '(max-width:600px)'});
+    const downSm = useMediaQuery('(max-width:600px)');
 
     const [profileMenu, setProfileMenu] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -180,8 +191,7 @@ const Header = withRouter(({history}) => {
     const logout = (e) => {
       auth.clearJWT();
       userContext.setUser(null);
-      if(window !== null)
-        history.push('/');
+      history.push('/');
     }
 
     const loggedIn = <> 
@@ -228,9 +238,13 @@ const Header = withRouter(({history}) => {
         <Grid container>
             <Grid item xs={3} />
             <Grid item xs={12} lg={6}>
-            <Icon className={classes.icon} path={mdiCartOutline} title="Cart" size={1.0}
-                color="#2a2b2b"
-            />
+
+              <Badge badgeContent={cartContext ? cartContext.cart ? cartContext.cart.length : 0 : 0} color='primary'>
+              <Icon className={classes.icon} path={mdiCartOutline} title="Cart" size={1.0}
+                  color="#2a2b2b"
+              />
+              </Badge>
+              
             </Grid>
             <Grid item xs={3} />
             <Grid item xs={3} />
@@ -254,9 +268,13 @@ const Header = withRouter(({history}) => {
           <Grid container justify='center' alignItems='center'>
             <Grid item sm={3} />
             <Grid item xs={6} lg={3}>
+            <Badge badgeContent={cartContext ? cartContext.cart ? cartContext.cart.length : 0 : 0} color='primary'>
+
               <Icon className={classes.icon} path={mdiCartOutline} title="User" size={1.0}
                   color="#2a2b2b"
               />
+
+            </Badge>
             </Grid>
             <Grid item xs={3} />
             <Grid item xs={3} />
@@ -272,6 +290,13 @@ const Header = withRouter(({history}) => {
 
     const mobileLoggedout = [
       <LoginNSignup />,
+      <Badge badgeContent={cartContext ? cartContext.cart ? cartContext.cart.length : 0 : 0} color='primary'>
+
+        <Icon className={classes.icon} path={mdiCartOutline} title="User" size={1.0}
+            color="#2a2b2b"
+        />
+
+      </Badge>,
       loggedOutItems.map((item, i) => {
         return (
         <StyledMenuItem key={i} label={item.name} component={Link} to={item.path}>
@@ -288,8 +313,7 @@ const Header = withRouter(({history}) => {
             <Grid container spacing={1} justify='flex-start'>
               <Grid item xs={10} sm={8} md={9} lg={4} className={classes.gridLogo}>
                 <Button disableRipple component={Link} to='/' className={classes.logoContainer}>
-                    {/* <img className={classes.logo} alt="logo" src={logo}/> */}
-                    <img className={classes.logo} alt="logo" src={"https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/logo.svg"}/>
+                    <img className={classes.logo} alt="logo" src={logo}/>
                 </Button>
               </Grid>
                 
@@ -318,26 +342,45 @@ const Header = withRouter(({history}) => {
 
                 loggedInItems.map((item, i) => {
                   return (
+                    <>
+                    {
+                      item.name === 'Cart' ? 
+
+                    <StyledMenuItem key={i} label={item.name} component={Link} to={item.path}>
+                      <StyledBadge showZero badgeContent={cartContext ? cartContext.cart ? cartContext.cart.length : 0 : 0} color='primary'>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                      </StyledBadge>
+                    </StyledMenuItem> 
+
+                    :
+
                     item.name === 'Logout' ? 
-                  <StyledMenuItem key={i} label={item.name} component={Button} onClick={logout}>
+                    <StyledMenuItem key={i} label={item.name} component={Button} onClick={logout}>
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.name} />
+                    </StyledMenuItem> 
+                    
+                    :
+
+                    <StyledMenuItem key={i} label={item.name} component={Link} to={item.path}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.name} />
-                  </StyledMenuItem> 
-                  : 
-                  <StyledMenuItem key={i} label={item.name} component={Link} to={item.path}>
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.name} />
-                  </StyledMenuItem> 
+                    </StyledMenuItem> 
+                    }
+                  
+                  </>
                   )
                 })
+
                 :loggedOutItems.map((item, i) => {
                   return (
                     <>
                     <LoginNSignup />
-                  <StyledMenuItem key={i} label={item.name} component={Link} to={item.path}>
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.name} />
-                  </StyledMenuItem>
+                    <StyledMenuItem key={i} label={item.name} component={Link} to={item.path}>
+                      <StyledBadge showZero badgeContent={cartContext ? cartContext.cart ? cartContext.cart.length : 0 : 0} color='primary'>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                      </StyledBadge>
+                    </StyledMenuItem> 
                   </>
                   )
                 })
