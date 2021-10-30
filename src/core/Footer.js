@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
     footer: {
         backgroundColor: theme.palette.common.blue,
+        background: 'radial-gradient(circle, rgba(0,125,147,1) 0%, rgba(87,34,120,1) 99%)',
         width: '100%',
         zIndex: 1302,
         position: 'relative',
@@ -44,14 +45,17 @@ const useStyles = makeStyles(theme => ({
     },
     medContent: {
         marginTop: '10%'
+    },
+    cards: {
+        marginTop: '15%',
+        marginRight: '5%'
     }
 }));
 
 function large(classes){
     return <> 
-    <Grid container spacing={0} direction="row" justify='center'>
-        <Grid item xs={2}>
-            {/* <img className={classes.adornment} src={FooterAdornment} alt='decorative slash'></img> */}
+    <Grid container spacing={0} direction="row" justify='space-evenly'>
+        <Grid item xs={1}>
             <img className={classes.adornment} src={"https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/FooterRect.svg"} alt='decorative slash'></img>
         </Grid>
         <Grid item container direction="column" xs={2} justify="center" spacing={1} alignItems="center">
@@ -97,6 +101,9 @@ function large(classes){
             </Grid>
         </Grid>
         <Grid container item xs={2} justify='flex-end' alignItems="flex-end">
+            <Grid item xs={12}>
+                <img className={classes.cards} alt='cards' src='https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/cards.svg' />
+            </Grid>
             <Grid item>
             <Typography variant="h6" className={classes.copyright}>
                 © 2021 Jaytronics
@@ -108,7 +115,7 @@ function large(classes){
 
 function medium(classes){
     return <> 
-    <Grid container>
+    <Grid container justify='space-evenly' >
         <Grid item xs={2}>
             <img className={classes.adornment} src={FooterAdornment} alt='decorative slash'></img>
         </Grid>
@@ -116,15 +123,21 @@ function medium(classes){
             <Grid item xs={12}>
                 <Typography component={Link} to="/" className={classes.about}>Home</Typography>
             </Grid>
-            <Grid item xs={12}>
-                <Typography component={Link} to="/about" className={classes.about}>About us</Typography>
-            </Grid>
+            
             <Grid item xs={12}>
                 <Typography component={Link} to="/contact" className={classes.about}>Contact us & Privacy policy</Typography>
             </Grid>
         </Grid>
-        <Grid item className={classes.copyright} xs={4}>
-            <Typography variant="caption">© 2021 Jaytronics</Typography>
+        
+        <Grid justify='center' item container direction='row' xs={4}>
+            
+            <Grid item xs={12}>
+                <img className={classes.cards} alt='cards' src='https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/cards.svg' />
+            </Grid>
+            <Grid item>
+                <Typography className={classes.copyright} variant="caption">© 2021 Jaytronics</Typography>
+            </Grid>
+            
         </Grid>
     </Grid>
     </>

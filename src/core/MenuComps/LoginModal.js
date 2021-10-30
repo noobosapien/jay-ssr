@@ -17,6 +17,8 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import AccountBoxRoundedIcon from '@material-ui/icons/AccountBoxRounded';
+import { withStyles } from '@material-ui/core/styles';
 
 import PWSI from '../../user/PWSI';
 
@@ -35,8 +37,51 @@ const useStyles = makeStyles(theme => ({
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '350px'
+    },
+    loginTyp: {
+        marginBottom: '10%'
+    },
+    fields: {
+        marginBottom: '5%',
+    },
+    topTriangle: {
+        width: 0,
+        height: 0,
+        borderRight: '100px solid transparent',
+        borderTop: `100px solid ${theme.palette.common.blue}`
     }
 }));
+
+const ForgotButton = withStyles({
+    root: {
+      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+      borderRadius: 3,
+      border: 0,
+      color: 'white',
+      height: 20,
+      padding: '0 30px',
+      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    },
+    label: {
+      textTransform: 'capitalize',
+    },
+})(Button);
+
+const ContinueButton = withStyles({
+    root: {
+      background: 'radial-gradient(circle, rgba(74,0,124,1) 0%, rgba(0,125,147,1) 100%)',
+      borderRadius: 10,
+      border: 0,
+      color: 'white',
+      height: 38,
+      padding: '0 30px',
+      marginBottom: '4%',
+      boxShadow: '0 3px 5px 2px rgba(0,125,147,0.3)',
+    },
+    label: {
+      textTransform: 'capitalize',
+    },
+})(Button);
 
 export default function LoginModal(props){
     const classes = useStyles();
@@ -229,15 +274,25 @@ export default function LoginModal(props){
             <Card className={classes.mainCard}>
                 <Grid container justify='center'>
                     
+                    
                 {
                     closable ? <>
-                    <Grid item xs={10} />
+                    {/* <Grid item xs={10} /> */}
+                    <Grid item xs={10}>
+                        <div className={classes.topTriangle} />
+                    </Grid>
                     <Grid item xs={2}> 
                         <IconButton onClick={closeClicked}>
                             <Cancel />
                         </IconButton>
                     </Grid>
-                    </> : <Typography>Please Login/Register to continue</Typography>
+                    </> : 
+                    <>
+                        <Grid item xs={12}>
+                            <div className={classes.topTriangle} />
+                        </Grid>
+                        <Typography>Please Login/Register to continue</Typography>
+                    </>
 
                 }
 
@@ -252,11 +307,28 @@ export default function LoginModal(props){
                 
 
                 <Grid item xs={12} />
-                <Grid item>
+                <Grid item className={classes.loginTyp}>
                     {
                         registerState ? 
-                        <Typography variant='h5'>Register</Typography> :
-                        <Typography variant='h5'>Login</Typography>
+                        <Grid container justify='center'>
+                            <Grid item>
+                                <AccountBoxRoundedIcon fontSize='large'/>
+                            </Grid>
+                            <Grid item xs={12} />
+                            <Grid item>
+                                <Typography variant='h5'>Register</Typography>
+                            </Grid>
+                        </Grid>
+                        :
+                        <Grid container justify='center'>
+                            <Grid item>
+                                <AccountBoxRoundedIcon fontSize='large'/>
+                            </Grid>
+                            <Grid item xs={12} />
+                            <Grid item>
+                                <Typography variant='h5'>Login</Typography>
+                            </Grid>
+                        </Grid>
                     }
                     
                 </Grid>
@@ -276,9 +348,9 @@ export default function LoginModal(props){
                         size='small' 
                         variant='outlined'/>
                     </Grid>
-                    <Grid item xs={12} />
+                    <Grid item xs={12} className={classes.fields} />
 
-                    <Grid item xs={3}>
+                    <Grid item xs={3} >
                         <Typography>Last Name: </Typography>
                     </Grid>
                     <Grid item xs={8}>
@@ -290,16 +362,17 @@ export default function LoginModal(props){
                         size='small' 
                         variant='outlined'/>
                     </Grid>
-                    <Grid item xs={12} />
+                    <Grid item xs={12} className={classes.fields}/>
                     </> : undefined
                 }
                 
                 
                 <Grid item xs={3}>
-                    <Typography type='email'>Email: </Typography>
+                    <Typography>Email: </Typography>
                 </Grid>
                 <Grid item xs={8}>
                     <TextField 
+                    type='email'
                     inputRef={emailRef}
                     error={emailError} 
                     onChange={e=>setEmail(e.target.value)}
@@ -307,7 +380,7 @@ export default function LoginModal(props){
                     size='small' 
                     variant='outlined'/>
                 </Grid>
-                <Grid item xs={12} />
+                <Grid item xs={12} className={classes.fields}/>
 
                 <Grid item xs={3}>
                     <Typography>Password: </Typography>
@@ -327,7 +400,18 @@ export default function LoginModal(props){
                         <PWSI setIsValid={setIsValid} password={password}/>
                     </Collapse>
                 </Grid>
-                <Grid item xs={12} />
+                <Grid item xs={12} className={classes.fields} />
+
+                {
+                    !registerState ? <> 
+                    <Grid item xs={6} />
+                    <Grid item xs={6}>
+                        <ForgotButton>Forgot password?</ForgotButton>
+                    </Grid>
+                    <Grid item xs={12} className={classes.fields} />
+                    </> : 
+                    <> </>
+                }
 
                 {
                     registerState ? <>
@@ -344,7 +428,7 @@ export default function LoginModal(props){
                         size='small' 
                         variant='outlined'/>
                     </Grid>
-                    <Grid item xs={12} />
+                    <Grid item xs={12} className={classes.fields} />
                     </> : undefined
                 }
                 
@@ -353,7 +437,7 @@ export default function LoginModal(props){
                     {
                         loading ? <CircularProgress color='primary' /> :
                         <Grid item>
-                            <Button onClick={registerDone} startIcon={<CheckCircleOutline />}>Done</Button>
+                            <ContinueButton onClick={registerDone} startIcon={<CheckCircleOutline />}>Done</ContinueButton>
                         </Grid>
                     }
                     
@@ -361,11 +445,11 @@ export default function LoginModal(props){
                     {
                         loading ? <CircularProgress color='primary' /> : <>
                         <Grid item>
-                            <Button endIcon={<DoubleArrow />} onClick={signinUser}>Signin</Button>
+                            <ContinueButton endIcon={<DoubleArrow />} onClick={signinUser}>Signin</ContinueButton>
                         </Grid>
-
+                        <Grid item xs={2} />
                         <Grid item>
-                            <Button endIcon={<Assignment />} onClick={onRegisterClick}>Register</Button>
+                            <ContinueButton endIcon={<Assignment />} onClick={onRegisterClick}>Register</ContinueButton>
                         </Grid>
                     </>
                     }

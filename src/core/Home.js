@@ -21,7 +21,11 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.openTitle
     },
     categories: {
-        marginTop: '4%'
+        marginTop: '4%',
+        // background: 'linear-gradient(161deg, rgba(0,0,0,1) 36%, rgba(0,125,147,1) 100%)',
+        color: theme.palette.common.gray,
+        width: '20%',
+        // borderRadius: '50% 20% / 10% 40%'
     },
     message: {
         marginTop: '2%',
@@ -30,7 +34,8 @@ const useStyles = makeStyles(theme => ({
         // background: 'rgb(89,0,126)',
         background: 'linear-gradient(90deg, rgba(0,125,147,1) 0%, rgba(176,161,62,1) 96%)',
         color: theme.palette.common.white,
-        borderRadius: '5%'
+        borderRadius: '50% 20% / 10% 40%',
+        animation: `$changeBorderRadius 3000ms ${theme.transitions.easing.easeInOut} infinite`
     },
     bannerItem: {
         [theme.breakpoints.down("sm")]: {
@@ -40,7 +45,18 @@ const useStyles = makeStyles(theme => ({
     productCarousel: {
         // marginTop: '2%',
         // marginBottom: '2%',
-    }
+    },
+    "@keyframes changeBorderRadius": {
+        "0%": {
+            borderRadius: '10% 20% / 10% 40%'
+        },
+        "50%": {
+            borderRadius: '10% 40% / 50% 20%'
+        },
+        "100%": {
+            borderRadius: '10% 20% / 10% 40%'
+        },
+    },
 }));
 
 export default function Home(){
