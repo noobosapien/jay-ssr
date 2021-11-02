@@ -4,7 +4,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
@@ -22,9 +21,8 @@ import Menu from '@material-ui/core/Menu';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import Pagination from '@mui/material/Pagination';
 import ProductCard from './ProductCard';
-
+import Skeletons from './Skeletons';
 import {getComponents, getMinorComponents, getItems} from './api-products';
-import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     categoryGrid: {
@@ -35,10 +33,23 @@ const useStyles = makeStyles((theme) => ({
     },
     category: {
         fontSize: "1.7rem",
-        fontFamily: 'Inconsolata'
+        fontFamily: 'Inconsolata',
+        background: theme.palette.common.blue,
+        color: theme.palette.common.white,
+        clipPath: 'polygon(0 0, 100% 0%, 80% 100%, 0% 100%)',
+        width: '45%',
+        [theme.breakpoints.down("md")]: {
+            width: '60%',
+            fontSize: "1.2rem",
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: '100%',
+            fontSize: "1.2rem",
+        },
+        
     },
     card: {
-        // maxWidth: 1400,
+        minHeight: 1400,
         // marginLeft: '10%',
         // [theme.breakpoints.down("xs")]: {
         //     marginLeft: "0%"
@@ -103,8 +114,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '4%'
     },
     minCatChip: {
-        backgroundColor: theme.palette.common.gray,
-        color: theme.palette.common.white
+        // backgroundColor: theme.palette.common.gray,
+        // color: theme.palette.common.white,
+        // borderRadius: 10,
+        // marginRight: '1rem'
     },
     resVals: {
         backgroundColor: theme.palette.common.white,
@@ -122,6 +135,10 @@ const useStyles = makeStyles((theme) => ({
     },
     drawerComponents: {
         width: 250,
+    },
+    pages: {
+        marginTop: '5%',
+        marginBottom: '20%'
     }
 }));
 
@@ -138,6 +155,7 @@ export default function Category({match}){
     const [pages, setPages] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [minCatAnchor, setMinCatAnchor] = useState(null);
+    const [loading, setLoading] = useState(true);
     const openMinCatMenu = Boolean(minCatAnchor);
 
     const minCatNames = useMemo(() => {
@@ -221,6 +239,7 @@ export default function Category({match}){
         async function getAllItems(minCats, sort, page, signal){
             try{
                 if(minCats && selectedComp){
+                    setLoading(true);
                     const response = await getItems(minCats, selectedComp._id, match.params.shop, sort, page, signal);
                     // response && response.minCats && console.log("Category 225: ", response.minCats);
 
@@ -228,6 +247,8 @@ export default function Category({match}){
                     response.minCats.forEach((item) => {
                         items.push(...item.products);
                     });
+
+                    setLoading(false)
 
                     setAllItems(items);
 
@@ -308,6 +329,7 @@ export default function Category({match}){
             minorCats.map((minCat, i) => {
                 return(
                     <FormControlLabel 
+                        className={classes.minCatChip}
                         control={<Checkbox onChange={()=>{minCat.checked=!minCat.checked;setMinorCats([...minorCats])}}
                         name={minCat.name} 
                         checked={minCat.checked} />}
@@ -341,6 +363,7 @@ export default function Category({match}){
                 minorCats.map((minCat, i) => {
                     return(
                         <FormControlLabel 
+                            className={classes.minCatChip}
                             control={<Checkbox onChange={()=>{minCat.checked=!minCat.checked;setMinorCats([...minorCats])}}
                             name={minCat.name} 
                             checked={minCat.checked} />}
@@ -423,7 +446,7 @@ export default function Category({match}){
             {matches ? selectMinorCatsDown : undefined}
 
             <Grid item xs={12} md={12} lg={10}>
-                <Card className={classes.card}>
+                <Card className={classes.card} variant='outlined'>
                     <Grid justify="center" container>
                         
                         {matches ? undefined : selectMinorCatsUp}
@@ -442,7 +465,7 @@ export default function Category({match}){
 
                         <Grid item xs={12}>
                             <Grid container spacing={10} justify="center">
-                                {allItems.map((item, i) => {
+                                {loading ? <Skeletons width={280} height={500} /> : allItems.map((item, i) => {
                                     return <ProductCard item={item} minCatNames={minCatNames} />
                                 })
                                 }
@@ -450,7 +473,7 @@ export default function Category({match}){
                         </Grid>
 
                         <Grid item>
-                            <Pagination page={page} onChange={onPageChange} count={pages} variant='outlined' color='secondary' size='large' />
+                            <Pagination className={classes.pages} page={page} onChange={onPageChange} count={pages} variant='outlined' color='secondary' size='large' />
                         </Grid>
                     </Grid>
 
