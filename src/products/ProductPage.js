@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Grow from '@material-ui/core/Grow';
+import Link from '@material-ui/core/Link';
 
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
@@ -38,29 +39,30 @@ const useStyles = makeStyles((theme) => ({
     },
     productHeader: {
         fontSize: "1.7rem",
-        fontFamily: 'Inconsolata'
+        // fontFamily: 'Inconsolata'
     },
     prodImagePaper: {
         // margin: '20% 2% 2% 2%',
         // padding: '2% 2% 2% 2%',
         marginTop: '20%',
-        maxWidth: '250px',
-        minWidth: '250px'
+        // maxWidth: '250px',
+        // minWidth: '250px'
     },
     infoPaper: {
-        margin: '10% 2% 2% 2%',
+        margin: '20% 0% 2% 0%',
         // marginTop: '5%',
         padding: '2% 2% 2% 2%',
-        maxWidth: '650px',
-        minWidth: '350px'
+        borderColor: theme.palette.common.blue
+        // maxWidth: '650px',
+        // minWidth: '350px'
     },
     infoName: {
         fontSize: "1.2rem",
-        fontFamily: 'Mate SC'
+        // fontFamily: 'Mate SC'
     },
     infoValue: {
-        fontSize: "1.0rem",
-        fontFamily: 'Lexend Exa',
+        fontSize: "1.2rem",
+        // fontFamily: 'Lexend Exa',
         color: theme.palette.common.gray
     },
     space: {
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     },
     simItemsHeader: {
         fontSize: "1.2rem",
-        fontFamily: 'Mate SC'
+        // fontFamily: 'Mate SC'
     },
     simItemImg: {
         // height: '100px'
@@ -87,32 +89,35 @@ const useStyles = makeStyles((theme) => ({
         width: '250px'
     },
     cart: {
-        color: theme.palette.common.white,
-        background: 'rgb(63,60,78)',
-        background: 'linear-gradient(90deg, rgba(63,60,78,1) 14%, rgba(57,74,83,1) 84%)',
+        color: theme.palette.common.blue,
+        // background: 'rgb(63,60,78)',
+        // background: 'linear-gradient(90deg, rgba(63,60,78,1) 14%, rgba(57,74,83,1) 84%)',
     },
     removeButton: {
         background: 'rgb(63,60,78)',
         color: 'white',
-        marginTop: '15%'
+        // marginTop: '15%'
     },
     inCartHeading: {
-        fontFamily: 'Lexend Exa',
-        fontSize: '0.7em',
+        // fontFamily: 'Lexend Exa',
+        // fontSize: '1.4em',
+        // marginTop: '10%'
+    },
+    outOfStock: {
         marginTop: '10%'
     },
     inCartAmount: {
-        fontFamily: 'Lexend Exa',
-        marginTop: '10%',
-        fontSize: '0.7em',
+        // fontFamily: 'Lexend Exa',
+        // marginTop: '10%',
+        // fontSize: '0.7em',
     },
     paperBelow: {
         position: 'relative',
         // marginLeft: '12%',
         // marginRight: '12%',
-        height: '50px',
-        minWidth: '245px',
-        maxWidth: '245px',
+        // height: '50px',
+        // minWidth: '245px',
+        // maxWidth: '245px',
         background: theme.palette.common.black,
         border: 'thick double #ff6f00',
         color: theme.palette.common.white
@@ -123,10 +128,37 @@ const useStyles = makeStyles((theme) => ({
         // marginLeft: '12%',
         // marginRight: '12%',
         height: '50px',
-        minWidth: '245px',
-        maxWidth: '245px',
+        // minWidth: '245px',
+        // maxWidth: '245px',
         background: theme.palette.common.red,
         border: 'thick #ff6f00',
+        color: theme.palette.common.white
+    },
+    descName: {
+        padding: '1%',
+        [theme.breakpoints.down('sm')]: {
+            padding: '5%',
+        },
+        borderRadius: 10,
+        background: theme.palette.common.blue,
+        color: theme.palette.common.white,
+    },
+    description: {
+        fontSize: '1.2rem'
+    },
+    varParameter: {
+        fontSize: '1.4rem',
+        color: theme.palette.common.gray
+    },
+    varValue: {
+        fontSize: '1.4rem'
+    },
+    pricesFor: {
+        marginBottom: '5%',
+        padding: '5%',
+        borderRadius: 10,
+        fontSize: '2.5rem',
+        background: theme.palette.common.blue,
         color: theme.palette.common.white
     }
 }));
@@ -264,12 +296,57 @@ export default function ProductPage({match}){
         <MyGallery showPlayButton={false} thumbnailPosition='right' showFullscreenButton={false} showNav items={allImages} />
     </Paper>
 
-    {
+    <Paper className={classes.prodImagePaper}>
+        <Grid container>
+            <Grid item>
+                <Typography>In stock:</Typography>
+            </Grid>
+            <Grid item>
+                <Typography>{product.stock}</Typography>
+            </Grid>
+        </Grid>
+    </Paper>
+    </>
+
+    const prodPrices = <>
+        <Card variant='outlined' className={classes.infoPaper}>
+            <Grid container justify='space-evenly'>
+                <Grid item xs={12} className={classes.pricesFor}>
+                    <Typography variant='h6'>Prices for: </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                    <Typography  className={classes.infoName}>1 - {product ? product.price1 ? product.price1.lessThan - 1 : null : null}: </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography  className={classes.infoValue}>${product ? product.price1 ? product.price1.price/100 : null : null}</Typography>
+                </Grid>
+                <Grid xs={12} item className={classes.space}/>
+
+                <Grid item xs={4}>
+                    <Typography  className={classes.infoName}>{product ? product.price1 ? product.price1.lessThan : null : null}
+                    - {product ? product.price2 ? product.price2.moreThan - 1 : null : null}: </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography  className={classes.infoValue}>${product ? product.price2 ? product.price2.price/100 : null : null}</Typography>
+                </Grid>
+                <Grid xs={12} item className={classes.space}/>
+
+                <Grid item xs={4}>
+                    <Typography  className={classes.infoName}>{product ? product.price2 ? product.price2.moreThan : null : null}+: </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography  className={classes.infoValue}>${product ? product.price3 ? product.price3.price/100 : null : null}</Typography>
+                </Grid>
+                <Grid xs={12} item className={classes.space}/>
+            </Grid>
+        </Card>
+
+        {
         <Grow in={!product.stock}>
             <Card className={classes.paperOOS}>
                 <Grid container alignItems="center" justify="center">
                     <Grid item>
-                        <Typography className={classes.inCartHeading}>Out of stock!</Typography>
+                        <Typography variant='h6' className={classes.outOfStock}>Out of stock!</Typography>
                     </Grid>
                 </Grid>
             </Card>
@@ -278,19 +355,19 @@ export default function ProductPage({match}){
 
     <Grow in={inCart}>
         <Card className={classes.paperBelow}>
-            <Grid container alignItems="center" justify="center">
-                <Grid item xs={1} />
+            <Grid container alignItems="center" justify="space-evenly">
+                {/* <Grid item xs={1} /> */}
                 <Grid item xs={3}>
-                    <Typography className={classes.inCartHeading}>In Cart:</Typography>
+                    <Typography variant='h6' className={classes.inCartHeading}>In Cart:</Typography>
                 </Grid>
 
-                <Grid item xs={1} />
+                {/* <Grid item xs={1} /> */}
                 <Grid item xs={2}>
-                    <Typography className={classes.inCartAmount}>{amount}</Typography>
+                    <Typography variant='h6' className={classes.inCartAmount}>{amount}</Typography>
                 </Grid>
 
-                <Grid item xs={1} />
-                <Grid item xs={3}>
+                {/* <Grid item xs={1} /> */}
+                <Grid item>
                     <Button className={classes.removeButton} onClick={removeFromCart}>Remove</Button>
                 </Grid>
             </Grid>
@@ -311,135 +388,76 @@ export default function ProductPage({match}){
     </div>
     </>
 
-    const prodInfo = <> 
-    <Paper variant="outlined" className={classes.infoPaper}>
-        <Grid container justify="space-around">
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>UID: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>{product ? product.uid : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>Name: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>{product ? product.name : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            {
-                product ? product.description ? <>
-                <Grid item xs={4}>
-                    <Typography  className={classes.infoName}>Description: </Typography>
-                </Grid>
-                <Grid item xs={8}>
-                    <Typography  className={classes.infoValue}>{product ? product.description : null}</Typography>
-                </Grid>
-                <Grid item className={classes.space}/> </>: undefined : undefined
-            }
-            
-
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>Type: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>{product ? product.minorCat ? product.minorCat.name : null : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>Price 0 - {product ? product.price1 ? product.price1.lessThan : null : null}: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>${product ? product.price1 ? product.price1.price/100 : null : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>Price {product ? product.price1 ? product.price1.lessThan : null : null}
-                 - {product ? product.price2 ? product.price2.moreThan : null : null}: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>${product ? product.price2 ? product.price2.price/100 : null : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>Price {product ? product.price2 ? product.price2.moreThan : null : null}+: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>${product ? product.price3 ? product.price3.price/100 : null : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>Stock: </Typography>
-            </Grid>
-            <Grid item xs={8}>
-                <Typography  className={classes.infoValue}>{product ? product.stock : null}</Typography>
-            </Grid>
-            <Grid item className={classes.space}/>
-
-            {
-                product ? product.variables instanceof Array ? product.variables.map((prod) => {
-                    return <> 
-                    <Grid item xs={4}>
-                        <Typography  className={classes.infoName}>{prod.parameter}: </Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Typography  className={classes.infoValue}>{prod.value}</Typography>
-                    </Grid>
-                    <Grid item className={classes.space}/>
-                    </>
-                }) : null : null
-            }
-            
-            <Grid item xs={4}>
-                <Typography  className={classes.infoName}>
-                    { product ? product.downloads instanceof Array ? product.downloads.length > 0 ? 
-                    "Downloads: " : null : null : null} </Typography>
-            </Grid>
-            <Grid container item xs={8}>
-                {
-                    product ? product.downloads instanceof Array ? product.downloads.map((download) => {
-                        return <>
-                            <Grid item xs={12}>
-                                <a target="_blank" rel="noreferrer" href={download.link}>
-                                    <Typography className={classes.infoValue}>{download.name}</Typography>
-                                </a>
-                            </Grid>
-                        </>
-                    }) : null : null
-                }
-            </Grid>
-            <Grid item className={classes.space}/>
-        </Grid>
-    </Paper>
-    </>
-
-    return <>
+    return <> 
     <Snackbar open={openMessage} autoHideDuration={4000} onClose={handleMsgClose}>
         <Alert onClose={handleMsgClose} severity="error">
             {message}
         </Alert>
     </Snackbar>
-    <Card className={classes.mainCard}>
-        <Grid container justify="center">
-            <Grid xs={12} item className={classes.productGrid}>
-                <Typography className={classes.productHeader}>Product</Typography>
-            </Grid>
-            <Grid item xs={12} md={6} lg={3}>
-                {product ? product.image ? prodImage : null : null}
-            </Grid>
 
-            <Grid item xs={12} md={6} lg={4}>
-                {product ? product.name ? prodInfo : null : null}
-            </Grid>
-
+    <Grid container justify='space-evenly'>
+        <Grid item className={classes.productGrid}>
+            <Typography className={classes.productHeader}>Product {product.name}</Typography>
         </Grid>
-    </Card>
+        <Grid item xs={10} />
+        <Grid item xs={12} />
+
+        <Grid item xs={10} md={6} lg={4}>
+            {product ? product.image ? prodImage : null : null}
+        </Grid>
+
+        <Grid item xs={10} md={6} lg={4}>
+            {product ? product.price1 ? prodPrices : null : null}
+        </Grid>
+        <Grid item xs={12} />
+
+        <Grid item xs={10}>
+            <Card style={{marginTop: '5%', marginBottom: '5%', padding: '5%'}} variant='outlined'>
+                <Grid container justify='space-evenly'>
+                    <Grid item xs={12}>
+                        <Typography variant='h6' className={classes.descName}>{product.name}</Typography>
+                    </Grid>
+
+                    <Grid item style={{marginTop: '5%'}}>
+                        <Typography className={classes.description}>
+                            {product.description}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} style={{marginTop: '5%'}} />
+
+                    {
+                        product && product.variables && product.variables.length > 0 ? product.variables.map((prod) => {
+                            return <Grid container spacing={3}>
+                            <Grid item>
+                                <Typography className={classes.varParameter}>{prod.parameter}</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography className={classes.varValue}>{prod.value}</Typography>
+                            </Grid>
+                            </Grid>
+                        }) : undefined
+                    }
+
+                    <Grid item xs={12} />
+
+                    {
+                        product && product.downloads && product.downloads.length > 0 ? product.downloads.map((down) => {
+                            return <Grid container spacing={3}>
+                            <Grid item>
+                                <Typography className={classes.varParameter}>{down.name}</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography component={Link}
+                                href={down.link} className={classes.varValue}>
+                                    Link
+                                </Typography>
+                            </Grid>
+                            </Grid>
+                        }) : undefined
+                    }
+                </Grid>
+            </Card>
+        </Grid>
+    </Grid>
     </>
 }

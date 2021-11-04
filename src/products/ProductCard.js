@@ -96,12 +96,17 @@ const useStyles = makeStyles((theme) => ({
         height: 275,
     },
     cart: {
-        color: theme.palette.common.white,
-        background: 'rgb(63,60,78)',
-        background: 'linear-gradient(90deg, rgba(63,60,78,1) 14%, rgba(57,74,83,1) 84%)',
+        color: theme.palette.common.blue,
+        // borderColor: theme.palette.common.orange,
+        // background: 'rgb(63,60,78)',
+        // background: 'linear-gradient(90deg, rgba(63,60,78,1) 14%, rgba(57,74,83,1) 84%)',
+    },
+    disabledButton: {
+        // background: 'linear-gradient(90deg, rgba(63,60,78,1) 14%, rgba(57,74,83,1) 84%)',
+        color: theme.palette.common.red,
     },
     name: {
-        fontFamily: 'Lexend Exa',
+        // fontFamily: 'Lexend Exa',
         margin: '10px 10px 10px 10px',
         textDecoration: 'none !important',
         color: theme.palette.common.gray
@@ -121,12 +126,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '20%'
     },
     inCartHeading: {
-        fontFamily: 'Lexend Exa',
+        // fontFamily: 'Lexend Exa',
         fontSize: '0.8em',
         marginTop: '10%'
     },
     inCartAmount: {
-        fontFamily: 'Lexend Exa',
+        // fontFamily: 'Lexend Exa',
         marginTop: '10%'
     },
     watermark: {
@@ -297,7 +302,10 @@ export default function ProductCard(props){
                     </Grid>
                     <Grid item xs={1} />
                     <Grid item xs={5}>
-                        <Button disabled={!item.stock} className={classes.cart} onClick={addToCartClick(item)}>Add to cart</Button>
+                        <Button classes={{disabled: classes.disabledButton}}
+                        variant='outlined' disabled={!item.stock} className={classes.cart} onClick={addToCartClick(item)}>
+                            Add to cart
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>
