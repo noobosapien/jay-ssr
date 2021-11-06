@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { v4 as uuidv4 } from 'uuid';
+import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 
 import { UserContext } from '../App';
 
@@ -53,10 +53,12 @@ export default function Orders(props){
         var orders = [];
 
         for(var i = 0; i < orderIDs.length ; i++){
-            orders.push(
-                <Grid key={uuidv4()} item xs={12}>
+            orders.push(<>
+                <Grid key={uuidv4()} item xs={12} lg={6} style={{marginBottom: '5%'}}>
                     <Order id={orderIDs[i]} />
                 </Grid>
+                <Grid item xs={12}/>
+                </>
             )
         }
         setAllOrders(orders);
@@ -68,23 +70,28 @@ export default function Orders(props){
     }
     
     return <> 
-        <Typography className={classes.heading} variant='h4'>Orders</Typography>
-
-        <Card variant='outlined'>
-            <Grid container>
-
-                {
-                    allOrders instanceof Array ? allOrders.map((ao, i) => 
-                    i <= allowed ?
-                    <> {ao} </> :
-                    <></>
-                ) : undefined
-                }
-
-                <Grid item>
-                    <Button onClick={addOneToAllowed}>More</Button>
-                </Grid>
+        
+        <Grid container justify='center'>
+            <Grid item >
+                <Typography className={classes.heading} variant='h4'>Orders</Typography>
             </Grid>
-        </Card>
+            <Grid item xs={8} lg={4}/>
+            <Grid ite xs={12} style={{marginBottom: '4%'}} />
+
+            {
+                allOrders instanceof Array ? allOrders.map((ao, i) => 
+                i <= allowed ?
+                <> {ao} </> :
+                <></>
+            ) : undefined
+            }
+            <Grid item xs={12}/>
+
+            <Grid item>
+                <Button endIcon={<ArrowDropDownCircleIcon/>} variant='outlined' onClick={addOneToAllowed}>
+                    Load more
+                </Button>
+            </Grid>
+        </Grid>
     </>
 }

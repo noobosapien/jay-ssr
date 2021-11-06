@@ -52,18 +52,20 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '4%',
     },
     passwordForm: {
-        width: '100%',
-        paddingTop: '10%',
-        paddingLeft: '2%',
-        paddingBottom: '2%',
-        marginBottom: '5%'
+        paddingBottom: '10%',
+        margin: '10%',
+        borderColor: theme.palette.common.purple,
+        [theme.breakpoints.down('sm')]: {
+            margin: '0'
+        }
     },
     passwordGridItem: {
         paddingRight: '10%',
         paddingBottom: '10%'
     },
     passwordGridText: {
-        paddingBottom: '10%'
+        paddingBottom: '10%',
+        paddingLeft: '10%'
     },
     passwordIndicator: {
         marginTop: '2%',
@@ -89,6 +91,13 @@ const useStyles = makeStyles(theme => ({
     changePassword: {
         marginBottom: '4%',
         marginLeft: '4%'
+    },
+    triangle: {
+        width: 0,
+        height: 0,
+        borderRight: '100px solid transparent',
+        borderTop: `50px solid ${theme.palette.common.blue}`,
+        marginBottom: '5%'
     }
 }));
 
@@ -350,9 +359,13 @@ export default function Profile(props){
     }, [oldPassword, newPassword, isValid, retypedPassword]);
     
     const changePassword = <Typography className={classes.changePassword} component={Button} onClick={()=>{setShowPasswordForm(true)}}>Change password</Typography>;
-    const passwordForm = <Grow in>
+    const passwordForm = <Collapse in>
         <Paper variant='outlined' className={classes.passwordForm}>
-            <Grid container justifyContent='center' alignItems='center'>
+            <Grid container justify='space-evenly' alignItems='space-evenly'>
+                <Grid item xs={12}>
+                    <div className={classes.triangle} />
+                </Grid>
+                <Grid item xs={12} />
                 <Grid item xs={4} className={classes.passwordGridText}>
                     <Typography>Old password: </Typography>
                 </Grid>
@@ -379,15 +392,15 @@ export default function Profile(props){
                 <Grid item xs={8} className={classes.passwordGridItem}>
                     <TextField fullWidth variant='outlined' size='small' type="password" onInput={handleRetypedPasswordChanged}/>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item >
                     <Button onClick={handlePasswordSave} disabled={passwordInvalid} variant="outlined">Done</Button>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item >
                     <Button onClick={cancelPasswordReset} variant="outlined">Cancel</Button>
                 </Grid>
             </Grid>
         </Paper>
-        </Grow>
+        </Collapse>
 
     //////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////

@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
     addToCartDiv: {
         marginTop: '70px',
-        width: '290px',
+        // width: '290px',
     },
     simItemsPaper: {
         margin: '10% 2% 2% 2%',
@@ -159,6 +159,12 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 10,
         fontSize: '2.5rem',
         background: theme.palette.common.blue,
+        color: theme.palette.common.white
+    },
+    prodStockPaper: {
+        padding: '5%',
+        marginTop: '20%',
+        background: theme.palette.common.gray,
         color: theme.palette.common.white
     }
 }));
@@ -296,13 +302,13 @@ export default function ProductPage({match}){
         <MyGallery showPlayButton={false} thumbnailPosition='right' showFullscreenButton={false} showNav items={allImages} />
     </Paper>
 
-    <Paper className={classes.prodImagePaper}>
-        <Grid container>
+    <Paper className={classes.prodStockPaper}>
+        <Grid container justify='space-around'>
             <Grid item>
-                <Typography>In stock:</Typography>
+                <Typography variant='h6'>In stock:</Typography>
             </Grid>
             <Grid item>
-                <Typography>{product.stock}</Typography>
+                <Typography variant='h6'>{product.stock}</Typography>
             </Grid>
         </Grid>
     </Paper>
@@ -376,13 +382,15 @@ export default function ProductPage({match}){
 
     <div className={classes.addToCartDiv}>
         <Grid container justify="center" spacing={10}>
-            <Grid item xs={5}>
+            <Grid item>
                 <TextField size="small" type="number" value={prodCart}
                 inputProps={{max: product.stock, min: 1}} 
                 variant="outlined" placeholder="0" onChange={setCartAmount} />
             </Grid>
-            <Grid item xs={7}>
-                <Button disabled={!product.stock} className={classes.cart} onClick={addToCartClick(product)}>Add to cart</Button>
+            <Grid item>
+                <Button variant='outlined' disabled={!product.stock} className={classes.cart} onClick={addToCartClick(product)}>
+                    Add to cart
+                </Button>
             </Grid>
         </Grid>
     </div>

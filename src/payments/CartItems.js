@@ -14,16 +14,19 @@ import { CartContext } from '../App';
 const useStyles = makeStyles(theme => ({
     mainCard: {
         // boxShadow: '2px 0.1px #5e5e5e, -0.2em 0 .4em #007d93ff',
+        marginTop: '5%'
     },
     image: {
         width: '150px'
     },
     name: {
-        fontSize: '1.4rem',
+        fontSize: '1.1rem',
         textDecoration: 'none !important',
+        color: theme.palette.common.gray
     },
     parameter: {
-        fontSize: '0.8rem'
+        fontSize: '0.8rem',
+        color: theme.palette.common.black
     },
     value: {
         fontSize: '1.0rem'
@@ -37,10 +40,8 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.common.red
     },
     removeButton: {
-        background: 'rgb(255,0,1)',
-        // background: 'linear-gradient(90deg, rgba(124,0,104,1) 32%, rgba(255,0,0,1) 86%)',
-        color: theme.palette.common.white,
-        boxShadow: '0.1px 0.1px red, -0.2em 0 .4em purple',
+        color: theme.palette.common.red,
+        borderColor: theme.palette.common.red
     }
 }));
 
@@ -67,11 +68,11 @@ export default function CartItems(props){
                     <Card variant="outlined" className={classes.mainCard}>
                         <CardContent>
                             <Grid container justifyContent="space-evenly">
-                                <Grid item xs={3}>
+                                <Grid item xs={12} md={3}>
                                     <img className={classes.image} src={item.image} alt="item"/>
                                 </Grid>
 
-                                <Grid container item xs={4}>
+                                <Grid container item xs={12} md={4}>
                                     <Grid item xs={12}>
                                         <Typography component={Link} to={`/prod/${item._id}`} className={classes.name}>
                                             {item.name}
@@ -79,10 +80,7 @@ export default function CartItems(props){
                                     </Grid>
 
                                     <Grid item xs={3}>
-                                        <Typography className={classes.parameter}>Qunatity:</Typography>
-                                    </Grid>
-                                    <Grid item xs={9}>
-                                        <Typography className={classes.value}>{item.amount}</Typography>
+                                        <Typography className={classes.parameter}>Qunatity:&nbsp;&nbsp;{item.amount}</Typography>
                                     </Grid>
 
                                     <Grid item xs={12} />
@@ -96,7 +94,7 @@ export default function CartItems(props){
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={12}>{console.log("Cart items 109: ", cartContext.cart)}
+                                    <Grid item xs={12}>
                                         <Typography className={classes.price}>
                                             ${
                                                 item.price1 && item.price2 && item.price3 ? 
@@ -114,7 +112,7 @@ export default function CartItems(props){
 
                                 <Grid container alignItems="flex-end" item xs={2}>
                                     <Grid item xs={12}>
-                                        <Button onClick={removeItem(item)} className={classes.removeButton}>
+                                        <Button onClick={removeItem(item)} variant='outlined' className={classes.removeButton}>
                                             Remove
                                         </Button>
                                     </Grid>

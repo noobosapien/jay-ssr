@@ -6,16 +6,30 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { v4 as uuidv4 } from 'uuid';
 import OrderItem from './OrderItem';
+import Chip from '@material-ui/core/Chip';
+import LocalPostOfficeIcon from '@material-ui/icons/LocalPostOffice';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { UserContext } from '../App';
 
 import { getOrderDetails } from './api-user';
 
 const useStyles = makeStyles(theme => ({
-    heading: {
-        paddingLeft: '5%',
-        paddingTop: '2%',
-        paddingBottom: '5%'
+    headingShipped: {
+        background: theme.palette.common.blue,
+        color: theme.palette.common.white,
+        marginBottom: '5%',
+        padding: '1%'
+    },
+    headingOther: {
+        background: theme.palette.common.purple,
+        color: theme.palette.common.white,
+        marginBottom: '5%',
+        padding: '1%'
     },
     orderRow: {
         '& > *': {
@@ -24,6 +38,25 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         width: '50px'
+    },
+    orderItem: {
+        padding: '1%'
+    },
+    chipUID: {
+        background: theme.palette.common.black,
+        color: theme.palette.common.white
+    },
+    chipShipped: {
+        background: theme.palette.common.green,
+        color: theme.palette.common.white
+    },
+    chipOther: {
+        background: theme.palette.common.orange,
+        color: theme.palette.common.white
+    },
+    addresses: {
+        padding: '4%',
+        fontSize: '1.2rem'
     }
 }));
 
@@ -50,28 +83,106 @@ export default function Order(props){
     
     return <> 
         <Card variant='outlined'>
-            <Grid container justify='flex-end'>
-                <Grid item xs={2}>
-                    <Typography className={classes.typ} variant='h6'>{orderData ? orderData.created? orderData.created : undefined : undefined}</Typography>
-                </Grid>
-                <Grid item xs={2}>
-                    <Typography variant='h6'>{orderData ? orderData.price? orderData.price : undefined : undefined}</Typography>
-                </Grid>
-                <Grid item xs={2}>
-                    <Typography variant='h6'>{orderData ? orderData.status? orderData.status : undefined : undefined}</Typography>
-                </Grid>
-                {console.log("Order 63: ", orderData)}
+            <Grid container justify='space-around'>
+                <Grid item xs={12}>
+                    <Card className={orderData.status === 'Shipped' ? classes.headingShipped : classes.headingOther}>
+                        <Grid container justify='space-around'>
+                        
+                        <Grid item>
+                            <Chip
+                            color='primary'
+                            classes={{colorPrimary: classes.chipUID}}
+                            label={`UID: 
+                            ${orderData ? orderData.uid? 
+                            orderData.uid : 
+                            undefined : undefined}`} />
+                        </Grid>
 
-                {
-                    orderData && orderData.items instanceof Array ? 
-                    orderData.items.map((item) => {
-                        return <Grid item xs={12} key={uuidv4()}>
+                        <Grid item>
+                        <Typography className={classes.typ} variant='h6'>
+                            {orderData ? orderData.created? 
+                            new Date(orderData.created).toDateString() : 
+                            undefined : undefined}
+                        </Typography>
+                        </Grid>
+
+                        <Grid item>
+                        <Typography className={classes.typ} variant='h6'>
+                            {orderData ? orderData.created? 
+                            new Date(orderData.created).toLocaleTimeString() : 
+                            undefined : undefined}
+                        </Typography>
+                        </Grid>
+
+                        <Grid item xs={4} lg='auto'>
+                            <Typography variant='h6'>{orderData ? orderData.price? '$'+ orderData.price/100 : undefined : undefined}</Typography>
+                        </Grid>
+                        <Grid item>
+                        <Chip
+                            color='primary'
+                            classes={
+                                orderData ? orderData.status? orderData.status === 'Shipped' ? 
+                                {colorPrimary: classes.chipShipped} : 
+                                {colorPrimary: classes.chipOther} :
+                                {colorPrimary: classes.chipOther} :
+                                {colorPrimary: classes.chipOther}
+                            }
+                            label={`${orderData ? orderData.status? orderData.status : undefined : undefined}`} />
+                        </Grid>
+                        </Grid>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12}>
+                <Accordion>
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    >
+                    <Typography variant='h6' className={classes.accordianHead}>Addresses</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                    <Grid container justify='center'>
+                    <Grid item xs={12} lg={10}>
+                        <Card variant='outlined' className={classes.addresses}>
+                        <Typography style={{fontSize: '1.1rem'}}><LocalPostOfficeIcon/>&nbsp;&nbsp;&nbsp;{orderData.address}</Typography>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} lg={10}>
+                        <Card variant='outlined' className={classes.addresses}>
+                        <Typography style={{fontSize: '1.1rem'}}><ReceiptIcon/>&nbsp;&nbsp;&nbsp;{orderData.billingAddress}</Typography>
+                        </Card>
+                    </Grid>
+                    </Grid>
+                    </AccordionDetails>
+                </Accordion>
+                </Grid>
+
+                <Grid item xs={12}>
+                <Accordion>
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    >
+                    <Typography variant='h6' className={classes.accordianHead}>Items</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                    <Grid container justify='center'>
+                    {
+                        orderData && orderData.items instanceof Array ? 
+                        orderData.items.map((item) => {
+                            return <>
+                            <Grid item xs={10} key={uuidv4()} className={classes.orderItem}>
                                 <OrderItem 
                                 pid={item.product._id}
                                 amount={item.amount} />
                             </Grid>
-                    }) : undefined
-                }
+                            <Grid item xs={12} />
+                            </>
+                        }) : undefined
+                    }
+                    </Grid>
+                    </AccordionDetails>
+                </Accordion>
+                </Grid>
             </Grid>
         </Card>
     </>

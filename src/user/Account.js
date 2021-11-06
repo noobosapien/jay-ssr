@@ -67,6 +67,12 @@ export default function Account(props){
     const [showAdmin, setShowAdmin] = useState(false);
 
     useEffect(() => {
+        if(userContext.user === null){
+            history.push('/');
+        }
+    });
+
+    useEffect(() => {
         const getAdmin = async () => {
 
             if(userContext.user){
@@ -112,9 +118,8 @@ export default function Account(props){
                 {/* <Grid className={classes.section} item xs={12} md={5}>
                     <Addresses />
                 </Grid> */}
-                <Grid item xs={12} />
                         
-                <Grid className={classes.section} item xs={6}>
+                <Grid className={classes.section} item>
                     <Orders />
                 </Grid>
                         

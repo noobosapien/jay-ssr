@@ -56,21 +56,27 @@ const userByID = async (req, res, next, id) => {
 
 //need for admin and profile
 const read = async (req, res) => {
-    if(req.auth){
-        const user = await User.findById(req.auth._id);
-        const obj = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email
+    try{
+        if(req.auth){
+            const user = await User.findById(req.auth._id);
+            const obj = {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email
+            }
+    
+            return res.json(obj);
         }
-
-        return res.json(obj);
+        return res.json({
+            firstName: "",
+            lastName: "",
+            email: ""
+        });
+    }catch(e){
+        res.json({
+            e
+        });
     }
-    return res.json({
-        firstName: "",
-        lastName: "",
-        email: ""
-    });
 }
 
 //need for profile
@@ -191,7 +197,7 @@ const getOrders = async (req, res, next) => {
     }
 
     return res.json({
-        orders: [...user.orders]
+        orders: [...user.orders].reverse()
     });
 }
 

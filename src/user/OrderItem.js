@@ -20,6 +20,13 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         height: '50px'
+    },
+    itemName: {
+        fontSize: '0.85rem'
+    },
+    itemQuantity: {
+        color: theme.palette.common.gray,
+        fontSize: '0.5rem'
     }
 }));
 
@@ -47,27 +54,30 @@ export default function OrderItem(props){
     }, [pid])
     
     return <> 
-        <Card>
-            <Grid container justify='space-around'>
-                <Grid item xs={2}>
+        <Card variant='outlined' style={{padding: '2%'}}>
+            <Grid container justify='space-between' alignItems='center' spacing={1}>
+                <Grid item >
                     {
                         item ? item.image ? 
                         <img className={classes.image} alt='order' src={item.image} /> :
                         undefined : undefined
                     }
                 </Grid>
-                <Grid item container xs={10}>
-                    <Grid item xs={12}>
+                <Grid item container justify='space-around' xs={6} md={8}>
+                    <Grid item>
                     {
-                        item ? item.name ? <Typography>{item.name}</Typography> : undefined : undefined
+                        item ? item.name ? <Typography className={classes.itemName}>{item.name}</Typography> : undefined : undefined
                     }
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} />
+                    <Grid item>
                     {
-                        amount ? <Typography>{amount}</Typography> : undefined
+                        amount ? <Typography className={classes.itemQuantity}>Quantity:&nbsp;&nbsp;&nbsp;{amount}</Typography> : undefined
                     }
                     </Grid>
                 </Grid>
+
+                <Grid item xs={12} />
             </Grid>
         </Card>
     </>

@@ -41,11 +41,20 @@ const useStyles = makeStyles(theme => ({
         fontFamily: 'Lexend Exa',
         fontSize: '1em',
         // background: theme.palette.common.blue,
-        color: theme.palette.common.blue
+        color: theme.palette.common.blue,
+        borderColor: theme.palette.common.blue
     },
     cartEmpty: {
-        fontFamily: 'Lexend Exa',
-        fontSize: '2em'
+        width: '600px',
+        [theme.breakpoints.down('sm')]: {
+            width: '360px'
+        }
+    },
+    mainCard: {
+        marginTop: '5%',
+        [theme.breakpoints.down('sm')]: {
+            marginTop: '10%'
+        }
     }
 
 }));
@@ -112,12 +121,13 @@ export default function Cart(props){
         <CartItems />
 
         <Grid item xs={8} />
-        <Grid item xs={4}>
+        <Grid item>
             <Typography className={classes.totalHeader}>
                 {total > 0 ? `Sub total: $${total/100}` : undefined}
             </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} />
+        <Grid item>
             <Button className={classes.toCheckout} 
             component={Link} to='/checkout'
             disabled={!showCheckout} variant='outlined'>
@@ -129,10 +139,11 @@ export default function Cart(props){
 
     const cartEmpty = <> 
     <Grid container justify='center'>
-        <Grid item xs={2}>
-            <Typography className={classes.cartEmpty}>
-                Cart is empty
-            </Typography>
+        <Grid item>
+            <img 
+            alt='empty cart' 
+            src='https://jaytronics.s3.ap-southeast-2.amazonaws.com/other/cartempty.png' 
+            className={classes.cartEmpty}/>
         </Grid>
     </Grid>
     </>
@@ -141,11 +152,17 @@ export default function Cart(props){
     <Card>
         <Grid container>
             <Grid item xs={12}>
-                <Card>
-                    <Typography variant='h4' className={classes.heading}>Cart</Typography>
-                    <Card className={classes.itemCard}>
-                        {total > 0 ? cartItems : cartEmpty}
-                    </Card>
+                <Card className={classes.mainCard}>
+                    <Grid container justify='center'>
+                        <Grid item>
+                            <Typography variant='h4' className={classes.heading}>Cart</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                        <Card className={classes.itemCard}>
+                            {total > 0 ? cartItems : cartEmpty}
+                        </Card>
+                        </Grid>
+                    </Grid>
                 </Card>
             </Grid>
         </Grid>

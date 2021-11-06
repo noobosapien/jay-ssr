@@ -2,7 +2,7 @@ import { createTheme } from '@material-ui/core/styles';
 
 const jayPurple = "#4e0166";
 const jayAqua = "#ebfffc";
-const jayBlue = "#007d93ff";
+const jayBlue = "#007d93";
 const jayWhite = "#ffffff";
 const jayGray = "#5e5e5e";
 const jayLightGray = "#cccccc";
