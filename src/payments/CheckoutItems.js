@@ -32,7 +32,7 @@ export default function CheckoutItems(props){
     const cartContext = useContext(CartContext);
 
     const [total, setTotal] = useState(undefined);
-    const [shipping, setShipping] = useState(800);
+    const { shipping } = props;
 
     useEffect(()=>{
         if(cartContext.cart instanceof Array && cartContext.cart.length < 1){
@@ -119,7 +119,7 @@ export default function CheckoutItems(props){
                 <Typography className={classes.itemDesc} variant="h6">Shipping - </Typography>
             </Grid>
             <Grid item xs={4}>
-                <Typography className={classes.itemText} variant="h6">$8</Typography>
+                <Typography className={classes.itemText} variant="h6">${shipping/100}</Typography>
             </Grid>
             <Grid item xs={12}/>
 

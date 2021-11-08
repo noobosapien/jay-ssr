@@ -64,4 +64,4 @@ const putUserCart = async(user, cart, signal) => {
     }
 }
 
-export {subTotal, getUserCart, putUserCart}
+export { subTotal, getUserCart, putUserCart }

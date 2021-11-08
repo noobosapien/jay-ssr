@@ -15,4 +15,7 @@ router.route('/_cart')
 router.route('/viewOrder')
 .get(authCtrl.requireSignin, paymentCtrl.viewOrder);
 
+router.route('/postcode')
+.get(paymentCtrl.getShipping);
+
 module.exports = router;

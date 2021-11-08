@@ -3,12 +3,13 @@ const Order = require('../models/order-model');
 const Product = require('../models/product-model');
 const paymentHelper = require('../helpers/paymentHelper');
 const keys = require('../config/keys');
+const rural = require('../data/postcodes');
 
 const stripe = require("stripe")(keys.stripeKey);
 
 const createPaymentIntent = async (req, res, next) => {
   try{
-    const { items } = req.body;
+    const { items, shippingPrice } = req.body;
     const user = await User.findById(req.auth._id);
 
     if(user){
@@ -60,7 +61,7 @@ const createPaymentIntent = async (req, res, next) => {
           product_data: {
             name: "Shipping",
           },
-          unit_amount: 800,
+          unit_amount: Number(shippingPrice),
         },
         quantity: 1,
       }
@@ -167,4 +168,17 @@ const viewOrder = async (req, res, next) => {
   }
 }
 
-module.exports = {createPaymentIntent, getCartFromUser, putCartToUser, viewOrder}
+const getShipping = async (req, res, next) => {
+  var price = 1100;
+  if(rural.includes(Number(req.query.pc))){
+    price = 1100;
+  }else{
+    price = 600;
+  }
+
+  return res.json({
+    price
+  });
+}
+
+module.exports = {createPaymentIntent, getCartFromUser, putCartToUser, viewOrder, getShipping}

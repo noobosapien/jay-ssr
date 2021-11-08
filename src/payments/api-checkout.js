@@ -89,7 +89,7 @@ const saveBillAddress = async (user, address, signal) => {
     }
 }
 
-const forwardToPay = async (user, items, signal) =>{
+const forwardToPay = async (user, items, shipping, signal) =>{
     try{
         if(user.user.token){
 
@@ -102,7 +102,7 @@ const forwardToPay = async (user, items, signal) =>{
                   'Content-Type': 'application/json',
                   'Authorization': `Bearer ${user.user.token}`
                 },
-                body: JSON.stringify({items})
+                body: JSON.stringify({items, shippingPrice: shipping})
             });
             return await response.json();
         }
@@ -135,4 +135,23 @@ const getOrder = async (user, id, signal) => {
     }
 }
 
-export { getUserAddress, getUserBillingAddress, forwardToPay, saveDelAddress, saveBillAddress, getOrder }
+
+const getShipping = async (postCode, signal) => {
+    try{
+        let response = await fetch(`/postcode?pc=${postCode}`,
+        {
+            method: 'GET',
+            signal,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+    
+        return await response.json();
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+export { getUserAddress, getUserBillingAddress, forwardToPay, saveDelAddress, saveBillAddress, getOrder, getShipping }

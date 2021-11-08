@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     addressDesc: {
         // marginTop: '8%',
         marginBottom: '8%',
+        color: theme.palette.common.gray
     },
     bEditAddress: {
         marginTop: '2rem'
@@ -48,6 +49,12 @@ const useStyles = makeStyles(theme => ({
     countryTyp: {
         marginBottom: '1rem',
         marginTop: '2rem'
+    },
+    mainCard: {
+        // padding: '2%'
+    },
+    addressSelect: {
+        color: theme.palette.common.green
     }
   
   }));
@@ -94,7 +101,7 @@ export default function ChooseBillingAddress(props){
 
     const handleEdit = e => {
         setEditAddress(true);
-        // setBillAddress("");
+        setBillAddress("");
     }
 
     const handleMsgClose = (event) => {
@@ -117,7 +124,7 @@ export default function ChooseBillingAddress(props){
 
     const handleEditClose = async e => {
         if(addressValid()){
-            const edittedAddress = streetRef.current.value;
+            const edittedAddress = e;
     
             if(userContext.user && userContext.user.user){
                 const abortController = new AbortController();
@@ -174,7 +181,7 @@ export default function ChooseBillingAddress(props){
             </Grid>
             
         </Grid>
-        <Grid item xs={2}>
+        <Grid item>
             <Button onClick={handleEdit} variant="outlined">Edit</Button>
         </Grid>
     </Grid>
@@ -184,8 +191,15 @@ export default function ChooseBillingAddress(props){
     const [goog, setGoog] = useState("");
     const handleSelect = async (value) => {
         const result = await geocodeByAddress(value);
-        setGoog(value);
-        console.log("CA 213: ", result);
+        if(result instanceof Array && result[0].address_components instanceof Array){
+            const index = result[0].address_components.length - 1;
+            const post_code = result[0].address_components[index].long_name;
+            handleEditClose(result[0].formatted_address);
+        }
+
+        if(result instanceof Array && result[0].formatted_address){
+            setGoog(result[0].formatted_address);
+        }
     }
 
     var searchOptions = {
@@ -196,6 +210,9 @@ export default function ChooseBillingAddress(props){
         <Grow in={editAddress} >
         <Grid container className={classes.address} alignItems="center" justify="center">
             <Grid container justify="center" item xs={10}>
+            <Grid item>
+                <Typography className={classes.addressSelect}>Please select an address from the suggested options when typing to continue.</Typography>
+            </Grid>
                 <Grid item xs={12}>
                 <PlacesAutocomplete searchOptions={searchOptions} value={goog} onChange={setGoog} onSelect={handleSelect}>
                     {
@@ -223,10 +240,7 @@ export default function ChooseBillingAddress(props){
                 <Grid item>
                     {
                         loading ?
-                        <CircularProgress className={classes.bEditAddress} /> :
-                        <Button onClick={handleEditClose} variant="outlined" className={classes.bEditAddress}>
-                            Save
-                        </Button>
+                        <CircularProgress className={classes.bEditAddress} /> : <> </>
                     }
                 </Grid>
 
@@ -246,15 +260,16 @@ export default function ChooseBillingAddress(props){
             {message}
         </Alert>
     </Snackbar>
-        <Card variant="outlined">
-        <Grid container justify='space-around'>
-            <Grid item xs={10}>
-                <Typography variant='h5'>Billing Address:</Typography>
-            </Grid>
-            <Grid item xs={10}>
-                {editAddress ? addressChange : showAddress}
-            </Grid>
+    <Card variant="outlined" className={classes.mainCard}>
+    <Grid container justify='space-around'>
+        <Grid item xs={10}>
+            <Typography variant='h5'>Billing Address:</Typography>
         </Grid>
-        </Card>
+        
+        <Grid item xs={10}>
+            {editAddress ? addressChange : showAddress}
+        </Grid>
+    </Grid>
+    </Card>
   </>
 }

@@ -35,15 +35,27 @@ const useStyles = makeStyles(theme => ({
       },
   },
   cardSection: {
-    marginBottom: '3%'
+    // marginBottom: '3%'
   },
   pay: {
-    marginTop: '100px',
+    // marginTop: '100px',
     marginBottom: '100px',
     fontFamily: 'Lexend Exa',
     fontSize: '1em',
     // background: theme.palette.common.blue,
     color: theme.palette.common.blue
+  },
+  mainCard: {
+    marginTop: '5%',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '15%'
+    }
+  },
+  space: {
+    marginTop: '8%',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '10%'
+    }
   }
 
 }));
@@ -60,6 +72,7 @@ export default function CheckoutForm() {
   const [message, setMessage] = useState("");
   const [openMessage, setOpenMessage] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [shipping, setShipping] = useState(1000);
 
   useEffect(() => {
     if(window){
@@ -91,7 +104,7 @@ export default function CheckoutForm() {
         }
 
         setLoading(true);
-        const result = await forwardToPay({user: userContext.user}, items, signal);
+        const result = await forwardToPay({user: userContext.user}, items, shipping, signal);
         setLoading(false);
         window.location = result.url;
 
@@ -112,42 +125,45 @@ export default function CheckoutForm() {
         </Alert>
     </Snackbar>
     <LoginModal openModal={openModal} setOpenModal={setOpenModal} closable={false} />
-    <Card>
-        <Grid container>
-            <Grid item xs={12}>
-                <Card>
-                    <Typography variant='h4' className={classes.heading}>Checkout</Typography>
-                    <Card className={classes.itemCard}>
-                        <Grid container justify='center' spacing='10'>
-                            <Grid className={classes.cardSection} item xs={10} lg={4}>
-                              <ChooseAddress setDelAddress={setDelAddress} />
-                            </Grid>
-
-                            <Grid className={classes.cardSection} item xs={10} lg={4}>
-                              <ChooseBillingAddress delAddress={delAddress} setBillAddress={setBillAddress} />
-                            </Grid>
-
-                            <Grid item xs={12} />
-                            
-                            <Grid className={classes.cardSection} item xs={10} lg={4}>
-                              <CheckoutItems />
-                            </Grid>
-
-                            <Grid item xs={12} />
-
-                            <Grid item xs={1}>
-                              {
-                                loading ? <CircularProgress /> :
-                                <Button onClick={handleContinue} variant="outlined" size="large" className={classes.pay}>
-                                  Continue
-                                </Button>
-                              }
-                            </Grid>
-                        </Grid>
-                    </Card>
-                </Card>
-            </Grid>
+    <Card className={classes.mainCard}>
+      <Grid container justify='center'>
+        <Grid item>
+          <Typography variant='h4' className={classes.heading}>Checkout</Typography>
         </Grid>
+        <Grid item xs={10} className={classes.space}/>
+
+        <Grid item>
+        <Card className={classes.itemCard}>
+            <Grid container justify='space-around'  spacing='4'>
+                <Grid className={classes.cardSection} item xs={10} lg={4}>
+                  <ChooseAddress setDelAddress={setDelAddress} setShipping={setShipping} />
+                </Grid>
+
+                <Grid className={classes.cardSection} item xs={10} lg={4}>
+                  <ChooseBillingAddress delAddress={delAddress} setBillAddress={setBillAddress} />
+                </Grid>
+
+                <Grid item xs={12} />
+                
+                <Grid className={classes.cardSection} item xs={10} lg={4}>
+                  <CheckoutItems shipping={shipping} />
+                </Grid>
+
+                <Grid item xs={12} />
+
+                <Grid item>
+                  {
+                    loading ? <CircularProgress /> :
+                    <Button onClick={handleContinue} variant="outlined" size="large" className={classes.pay}>
+                      Continue
+                    </Button>
+                  }
+                </Grid>
+            </Grid>
+        </Card>
+        </Grid>
+      </Grid>
+                    
     </Card>
 
     
