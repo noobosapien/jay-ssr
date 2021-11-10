@@ -18,6 +18,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 
 import { forwardToPay } from "./api-checkout";
 import LoginModal from "../core/MenuComps/LoginModal";
+import { getShippingPrice } from './api-checkout';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -72,7 +73,8 @@ export default function CheckoutForm() {
   const [message, setMessage] = useState("");
   const [openMessage, setOpenMessage] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [shipping, setShipping] = useState(1000);
+  const [shipping, setShipping] = useState(600);
+  const [rural, setRural] = useState(false);
 
   useEffect(() => {
     if(window){
@@ -83,6 +85,26 @@ export default function CheckoutForm() {
     }else{
       setOpenModal(false);
     }
+
+    const getShippingCost = async(signal) => {
+      if(userContext.user){
+          const result = await getShippingPrice({user: userContext.user}, signal);
+          if(result.shipping){
+            setShipping(Number(result.shipping));
+
+            if(Number(result.shipping === 1100)){
+              setRural(true);
+            }else{
+              setRural(false);
+            }
+          }
+      }
+    }
+
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    getShippingCost(signal);
+
   }, [userContext.user]);
 
   const handleContinue = async (event)=>{
@@ -136,7 +158,7 @@ export default function CheckoutForm() {
         <Card className={classes.itemCard}>
             <Grid container justify='space-around'  spacing='4'>
                 <Grid className={classes.cardSection} item xs={10} lg={4}>
-                  <ChooseAddress setDelAddress={setDelAddress} setShipping={setShipping} />
+                  <ChooseAddress setDelAddress={setDelAddress} setShipping={setShipping} rural={rural} setRural={setRural} />
                 </Grid>
 
                 <Grid className={classes.cardSection} item xs={10} lg={4}>

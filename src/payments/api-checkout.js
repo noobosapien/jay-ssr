@@ -136,22 +136,55 @@ const getOrder = async (user, id, signal) => {
 }
 
 
-const getShipping = async (postCode, signal) => {
+const getShipping = async (user, postCode, signal) => {
     try{
-        let response = await fetch(`/postcode?pc=${postCode}`,
-        {
-            method: 'GET',
-            signal,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        });
-    
-        return await response.json();
+        if(user.user.token){
+            let response = await fetch(`/postcode?pc=${postCode}`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+        
+            return await response.json();
+        }
         
     }catch(e){
         console.log(e);
     }
 }
-export { getUserAddress, getUserBillingAddress, forwardToPay, saveDelAddress, saveBillAddress, getOrder, getShipping }
+
+const getShippingPrice = async (user, postCode, signal) => {
+    try{
+        if(user.user.token){
+            let response = await fetch(`/shippingCost`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+        
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
+export { getUserAddress, 
+    getUserBillingAddress, 
+    forwardToPay, 
+    saveDelAddress, 
+    saveBillAddress, 
+    getOrder, 
+    getShipping, 
+    getShippingPrice }

@@ -33,12 +33,13 @@ const useStyles = makeStyles(theme => ({
     addressText: {
         // marginTop: '8%',
         marginBottom: '8%',
-        fontFamily: 'Inconsolata'
+        color: theme.palette.common.gray
+        // fontFamily: 'Inconsolata'
     },
     addressDesc: {
         // marginTop: '8%',
         marginBottom: '8%',
-        color: theme.palette.common.gray
+        color: theme.palette.common.blue
     },
     bEditAddress: {
         marginTop: '2rem'
@@ -51,7 +52,9 @@ const useStyles = makeStyles(theme => ({
         marginTop: '2rem'
     },
     mainCard: {
-        // padding: '2%'
+        paddingTop: '2%',
+        paddingLeft: '2%',
+        paddingRight: '2%'
     },
     addressSelect: {
         color: theme.palette.common.green
@@ -169,7 +172,7 @@ export default function ChooseBillingAddress(props){
     const showAddress = <>
     <Grow in={!editAddress} timeout={{enter: 1000, exit: 2000}}>
     <Grid container className={classes.address} alignItems="center" justify="center">
-    <Grid container item xs={12}>
+    <Grid container justify='space-around' item xs={12}>
             <Grid item>
                 <Typography variant='h6' className={classes.addressDesc}>Address:</Typography>
             </Grid>
@@ -261,12 +264,12 @@ export default function ChooseBillingAddress(props){
         </Alert>
     </Snackbar>
     <Card variant="outlined" className={classes.mainCard}>
-    <Grid container justify='space-around'>
-        <Grid item xs={10}>
+    <Grid container justify='center'>
+        <Grid item>
             <Typography variant='h5'>Billing Address:</Typography>
         </Grid>
         
-        <Grid item xs={10}>
+        <Grid item >
             {editAddress ? addressChange : showAddress}
         </Grid>
     </Grid>

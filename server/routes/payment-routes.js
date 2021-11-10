@@ -16,6 +16,9 @@ router.route('/viewOrder')
 .get(authCtrl.requireSignin, paymentCtrl.viewOrder);
 
 router.route('/postcode')
-.get(paymentCtrl.getShipping);
+.get(authCtrl.requireSignin, paymentCtrl.getShipping);
+
+router.route('/shippingCost')
+.get(authCtrl.requireSignin, paymentCtrl.getShippingPrice);
 
 module.exports = router;

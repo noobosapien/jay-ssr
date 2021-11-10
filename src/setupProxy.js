@@ -18,7 +18,8 @@ module.exports = function(app){
         '/latestProd',
         '/hotProd',
         '/mostBroughtProd',
-        '/postcode'
+        '/postcode',
+        '/shippingCost'
         ],
         createProxyMiddleware({
             target: "http://localhost:3001"

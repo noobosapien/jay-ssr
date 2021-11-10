@@ -169,16 +169,32 @@ const viewOrder = async (req, res, next) => {
 }
 
 const getShipping = async (req, res, next) => {
-  var price = 1100;
+  var price = 600;
   if(rural.includes(Number(req.query.pc))){
     price = 1100;
   }else{
     price = 600;
   }
 
+  const user = await User.findById(req.auth._id);
+  user.shipping = price;
+  await user.save();
+
   return res.json({
     price
   });
 }
 
-module.exports = {createPaymentIntent, getCartFromUser, putCartToUser, viewOrder, getShipping}
+const getShippingPrice = async (req, res, next) => {
+  const user = await User.findById(req.auth._id);
+  if(user.shipping){
+    return res.json({
+      shipping: user.shipping
+    });
+  }
+  return res.json({
+    shipping: 600
+  });
+}
+
+module.exports = {createPaymentIntent, getCartFromUser, putCartToUser, viewOrder, getShipping, getShippingPrice}

@@ -51,6 +51,9 @@ const UserSchema = new mongoose.Schema({
     billingAddress: {
         type: String
     },
+    shipping: {
+        type: Number
+    },
 
     salt: String
 });

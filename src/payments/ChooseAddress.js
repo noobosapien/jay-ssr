@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Chip from '@material-ui/core/Chip';
 
 import { UserContext } from '../App';
 import { getUserAddress, saveDelAddress, getShipping } from "./api-checkout";
@@ -28,12 +29,13 @@ const useStyles = makeStyles(theme => ({
     addressText: {
         // marginTop: '8%',
         marginBottom: '8%',
-        fontFamily: 'Inconsolata'
+        // fontFamily: 'Inconsolata',
+        color: theme.palette.common.gray
     },
     addressDesc: {
         // marginTop: '8%',
         marginBottom: '8%',
-        color: theme.palette.common.gray
+        color: theme.palette.common.blue
     },
     bEditAddress: {
         marginTop: '2rem'
@@ -43,15 +45,22 @@ const useStyles = makeStyles(theme => ({
         marginTop: '2rem'
     },
     mainCard: {
-        // padding: '2%'
+        paddingTop: '2%',
+        paddingLeft: '2%',
+        paddingRight: '2%',
     },
     addressSelect: {
         color: theme.palette.common.green
+    },
+    ruralChip: {
+        background: theme.palette.common.orange,
+        color: theme.palette.common.white,
+        marginBottom: '20%'
     }
   
   }));
 export default function ChooseAddress(props){
-    const { setDelAddress, setShipping } = props;
+    const { setDelAddress, setShipping, rural, setRural } = props;
     const classes = useStyles();
     const userContext = useContext(UserContext);
 
@@ -125,15 +134,22 @@ export default function ChooseAddress(props){
     const showAddress = <>
     <Grow in={!editAddress} timeout={{enter: 1000, exit: 2000}}>
     <Grid container className={classes.address} alignItems="center" justify="center">
-    <Grid container item xs={12}>
+    <Grid container justify='space-around' item xs={12}>
+            
             <Grid item>
                 <Typography variant='h6' className={classes.addressDesc}>Address:</Typography>
             </Grid>
             <Grid item xs={1} />
+
             <Grid item>
                 <Typography className={classes.addressText} variant='h6'>
                     {address ? address : ""}
                 </Typography>
+            </Grid>
+            <Grid item xs={12} />
+
+            <Grid item>
+                { rural ? <Chip label='Rural' size='small' className={classes.ruralChip}/> : <></> }
             </Grid>
             
         </Grid>
@@ -153,11 +169,18 @@ export default function ChooseAddress(props){
             const post_code = result[0].address_components[index].long_name;
 
             try{
-                const abortController = new AbortController();
-                const signal = abortController.signal;
-                const shipPrice = await getShipping(post_code, signal);
-                setShipping(Number(shipPrice.price));
+                if(userContext.user){
+                    const abortController = new AbortController();
+                    const signal = abortController.signal;
+                    const shipPrice = await getShipping({user: userContext.user}, post_code, signal);
+                    setShipping(Number(shipPrice.price));
 
+                    if(Number(shipPrice.price === 1100)){
+                        setRural(true);
+                    }else{
+                        setRural(false);
+                    }
+                }
             }catch(e){
                 console.log(e);
             }
@@ -225,11 +248,11 @@ export default function ChooseAddress(props){
         </Alert>
     </Snackbar>
     <Card variant="outlined" className={classes.mainCard}>
-    <Grid container justify='space-around'>
-        <Grid item xs={10}>
+    <Grid container justify='center'>
+        <Grid item>
             <Typography variant='h5'>Delivery Address:</Typography>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item>
             {editAddress ? addressChange : showAddress}
         </Grid>
     </Grid>

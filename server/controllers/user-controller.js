@@ -140,6 +140,7 @@ const setUserAddress = async (req, res, next) => {
     try{
         const user = await User.findById(req.auth);
         const address = {address: req.body.address};
+        // const postCode = req.body.pc;
         // console.log(address);
         
         await User.updateOne({_id: user._id}, address, (err, doc) => {
