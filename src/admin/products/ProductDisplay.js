@@ -22,6 +22,8 @@ import { getMinorCatNames,
 
 const useStyles = makeStyles((theme) => ({
     image: {
+        marginTop: '5%',
+        marginBottom: '5%',
         height: '200px',
         width: '200px'
     },
@@ -37,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
     ul: {
         backgroundColor: 'inherit'
+    },
+    mainCard: {
+        marginTop: '10%',
+        paddingLeft: '10%'
     }
 }));
 
@@ -148,7 +154,7 @@ function ProductDisplay(props){
         </Grid>
         
         <Grid item xs={6}>
-                <Button onClick={editNameButton}>Edit</Button>
+                <Button variant='contained' onClick={editNameButton}>Edit</Button>
         </Grid>
     </Grid>
 
@@ -157,10 +163,10 @@ function ProductDisplay(props){
             <TextField value={name} onChange={editNameText} />
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={saveName}>Save</Button>
+            <Button variant='contained' onClick={saveName}>Save</Button>
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={dontSaveName}>Reset</Button>
+            <Button variant='contained' onClick={dontSaveName}>Reset</Button>
         </Grid>
     </Grid>
 
@@ -194,7 +200,7 @@ function ProductDisplay(props){
         </Grid>
         
         <Grid item xs={6}>
-            <Button onClick={editUidButton}>Edit</Button>
+            <Button variant='contained' onClick={editUidButton}>Edit</Button>
         </Grid>
     </Grid>
 
@@ -203,10 +209,10 @@ function ProductDisplay(props){
             <TextField value={uid} onChange={editUidText} />
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={saveUid}>Save</Button>
+            <Button variant='contained' onClick={saveUid}>Save</Button>
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={dontSaveUid}>Reset</Button>
+            <Button variant='contained' onClick={dontSaveUid}>Reset</Button>
         </Grid>
     </Grid>
 
@@ -240,7 +246,7 @@ function ProductDisplay(props){
         </Grid>
         
         <Grid item xs={6}>
-            <Button onClick={editDescriptionButton}>Edit</Button>
+            <Button variant='contained' onClick={editDescriptionButton}>Edit</Button>
         </Grid>
     </Grid>
 
@@ -249,10 +255,10 @@ function ProductDisplay(props){
             <TextField multiline rows={6} fullwidth value={description} onChange={editDescriptionText} />
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={saveDescription}>Save</Button>
+            <Button variant='contained' onClick={saveDescription}>Save</Button>
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={dontSaveDescription}>Reset</Button>
+            <Button variant='contained' onClick={dontSaveDescription}>Reset</Button>
         </Grid>
     </Grid>
 
@@ -322,7 +328,7 @@ function ProductDisplay(props){
         </Grid>
         
         <Grid item xs={6}>
-            <Button onClick={editMinCategoryButton}>Edit</Button>
+            <Button variant='contained' onClick={editMinCategoryButton}>Edit</Button>
         </Grid>
     </Grid>
 
@@ -347,10 +353,10 @@ function ProductDisplay(props){
             </FormControl>
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={saveMinCategory}>Save</Button>
+            <Button variant='contained' onClick={saveMinCategory}>Save</Button>
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={dontSaveMinCategory}>Reset</Button>
+            <Button variant='contained' onClick={dontSaveMinCategory}>Reset</Button>
         </Grid>
     </Grid>
 
@@ -385,7 +391,7 @@ function ProductDisplay(props){
         </Grid>
         
         <Grid item xs={6}>
-                <Button onClick={editStockButton}>Edit</Button>
+                <Button variant='contained' onClick={editStockButton}>Edit</Button>
         </Grid>
     </Grid>
 
@@ -394,10 +400,10 @@ function ProductDisplay(props){
             <TextField value={stock} type="Number" onChange={editStockText} />
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={saveStock}>Save</Button>
+            <Button variant='contained' onClick={saveStock}>Save</Button>
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={dontSaveStock}>Reset</Button>
+            <Button variant='contained' onClick={dontSaveStock}>Reset</Button>
         </Grid>
     </Grid>
 
@@ -475,7 +481,7 @@ function ProductDisplay(props){
         <Grid item xs={12} />
 
         <Grid item xs={3}>
-                <Button onClick={e=>setEditPrice(true)}>Edit</Button>
+                <Button variant='contained' onClick={e=>setEditPrice(true)}>Edit</Button>
         </Grid>
     </Grid>
 
@@ -533,10 +539,10 @@ function ProductDisplay(props){
 
         
         <Grid item xs={2}>
-                <Button onClick={savePrices}>Save</Button>
+                <Button variant='contained' onClick={savePrices}>Save</Button>
         </Grid>
         <Grid item xs={2}>
-                <Button onClick={dontSavePrices}>Reset</Button>
+                <Button variant='contained' onClick={dontSavePrices}>Reset</Button>
         </Grid>
     </Grid>
 
@@ -614,7 +620,7 @@ function ProductDisplay(props){
             <Typography>{prod.value}</Typography>
         </Grid>
         <Grid item xs={3}>
-            <Button onClick={setEdit(prod)}>Edit</Button>
+            <Button variant='contained' onClick={setEdit(prod)}>Edit</Button>
         </Grid>
         </>
     
@@ -634,10 +640,10 @@ function ProductDisplay(props){
                 }}/>
         </Grid>
         <Grid item xs={2}>
-            <Button onClick={saveVariable(prod, editted)}>Save</Button>
+            <Button variant='contained' onClick={saveVariable(prod, editted)}>Save</Button>
         </Grid>
         <Grid item xs={2}>
-            <Button onClick={setEditOff(prod)}>Close</Button>
+            <Button variant='contained' onClick={setEditOff(prod)}>Close</Button>
         </Grid>
         </>
     }
@@ -718,7 +724,7 @@ function ProductDisplay(props){
             <Grid container item>
             {prod.edit ? varTF(prod) : varTyp(prod)}
             <Grid item xs={2}>
-                <Button onClick={removeVariable(prod)}>Remove</Button>
+                <Button variant='contained' onClick={removeVariable(prod)}>Remove</Button>
             </Grid>
         </Grid>
         </React.Fragment>
@@ -729,10 +735,10 @@ function ProductDisplay(props){
         {_product}
         <Grid container item>
             <Grid item xs={12}>
-                <Button disabled={addingVar} onClick={addVariable}>Add Variable</Button>
+                <Button variant='contained' disabled={addingVar} onClick={addVariable}>Add Variable</Button>
             </Grid>
             <Grid item xs={6}>
-                <Button onClick={event=>setDisplayVar(false)}>Close</Button>
+                <Button variant='contained' onClick={event=>setDisplayVar(false)}>Close</Button>
             </Grid>
         </Grid>
         </>
@@ -893,7 +899,7 @@ function ProductDisplay(props){
             <Typography><a href={prod.link}>Link</a></Typography>
         </Grid>
         <Grid item xs={3}>
-            <Button onClick={setDownloadEdit(prod)}>Edit</Button>
+            <Button variant='contained' onClick={setDownloadEdit(prod)}>Edit</Button>
         </Grid>
     </>
 
@@ -911,10 +917,10 @@ function ProductDisplay(props){
            <input placeholder="Download" onChange={addFile(prod, editted)} type="file" accept=".pdf"/>
         </Grid>
         <Grid item xs={2}>
-            <Button onClick={saveDownload(prod, editted)}>Upload</Button>
+            <Button variant='contained' onClick={saveDownload(prod, editted)}>Upload</Button>
         </Grid>
         <Grid item xs={2}>
-            <Button onClick={setDownloadEditOff(prod)}>Close</Button>
+            <Button variant='contained' onClick={setDownloadEditOff(prod)}>Close</Button>
         </Grid>
         </>
     }
@@ -951,7 +957,7 @@ function ProductDisplay(props){
             <Grid container item>
             {prod.edit ? downloadTF(prod) : downloadTyp(prod)}
             <Grid item xs={2}>
-                <Button onClick={removeDownload(prod)}>Remove</Button>
+                <Button variant='contained' onClick={removeDownload(prod)}>Remove</Button>
             </Grid>
         </Grid>
         </React.Fragment>
@@ -965,10 +971,10 @@ function ProductDisplay(props){
         {_download}
         <Grid container item>
             <Grid item xs={12}>
-                <Button disabled={addingDownload} onClick={addDownload}>Add Download</Button>
+                <Button variant='contained' disabled={addingDownload} onClick={addDownload}>Add Download</Button>
             </Grid>
             <Grid item xs={6}>
-                <Button onClick={event=>setDisplayDownload(false)}>Close</Button>
+                <Button variant='contained' onClick={event=>setDisplayDownload(false)}>Close</Button>
             </Grid>
         </Grid>
         </>
@@ -1061,8 +1067,8 @@ function ProductDisplay(props){
         }
     }
 
-    return <Card>
-        <Grid container>        
+    return <Card className={classes.mainCard}>
+        <Grid container spacing={6}>        
             <Grid item xs={12}>
                 <Typography>Image:</Typography>
             </Grid>
@@ -1075,7 +1081,7 @@ function ProductDisplay(props){
                     </CardActionArea>
                     <CardActions>
                         <input type="file" onChange={saveImage} accept="image/png" placeholder="Edit" />
-                        <Button onClick={resetImage}>Reset</Button>
+                        <Button variant='contained' onClick={resetImage}>Reset</Button>
                     </CardActions>
                 </Card>
             </Grid>
@@ -1098,7 +1104,7 @@ function ProductDisplay(props){
                                 title="image of product" />
                             </CardActionArea>
                             <CardActions>
-                                <Button onClick={removeOtherImage(im)}>Remove</Button>
+                                <Button variant='contained' onClick={removeOtherImage(im)}>Remove</Button>
                             </CardActions>
                         </Card>
                     </Grid>
@@ -1108,7 +1114,7 @@ function ProductDisplay(props){
             <Grid item xs={12} />
 
             <Grid item>
-                <Button onClick={resetOtherImages}>Reset other images</Button>
+                <Button variant='contained' onClick={resetOtherImages}>Reset other images</Button>
             </Grid>
             <Grid item xs={12} />
                 
@@ -1152,7 +1158,7 @@ function ProductDisplay(props){
             {
                 displayVar ? showVariables() : 
                 <Grid item xs={2}>
-                    <Button onClick={event=>setDisplayVar(true)}>Show</Button>
+                    <Button variant='contained' onClick={event=>setDisplayVar(true)}>Show</Button>
                 </Grid>
             }
             
@@ -1164,15 +1170,15 @@ function ProductDisplay(props){
             {
                 displayDownload ? showDownloads() : 
                 <Grid item xs={2}>
-                    <Button onClick={event=>setDisplayDownload(true)}>Show</Button>
+                    <Button variant='contained' onClick={event=>setDisplayDownload(true)}>Show</Button>
                 </Grid>
             }
             <Grid item xs={12} />
             <Grid item xs={6}>
-                <Button onClick={resetAll}>Reset all</Button>
+                <Button variant='contained' onClick={resetAll}>Reset all</Button>
             </Grid>
             <Grid item xs={6}>
-                <Button onClick={saveProduct}>Save</Button>
+                <Button variant='contained' onClick={saveProduct}>Save</Button>
             </Grid>
         </Grid>
     </Card>

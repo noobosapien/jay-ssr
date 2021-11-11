@@ -7,6 +7,7 @@ const router = express.Router();
 router.route('/admin/shops')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getShops);
 
+// router.route('/admin/categories')
 router.route('/admin/categories/:shop')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getCategories)
 .post(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.addCategory)
@@ -50,12 +51,12 @@ router.route('/admin/allUsers')
 router.route('/admin/userInfo/:customer')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getCustomer);
 
-router.param('shop', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setShop);
-router.param('category', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setCategory);
-router.param('minCategory', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setMinCategory);
-router.param('prod', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setProduct);
-router.param('minCatName', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setMinCatNames);
-router.param('mincatid', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setMinCatID);
-router.param('customer', authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.setCustomer);
+router.param('shop', adminCtrl.setShop);
+router.param('category', adminCtrl.setCategory);
+router.param('minCategory', adminCtrl.setMinCategory);
+router.param('prod', adminCtrl.setProduct);
+router.param('minCatName', adminCtrl.setMinCatNames);
+router.param('mincatid', adminCtrl.setMinCatID);
+router.param('customer', adminCtrl.setCustomer);
 
 module.exports = router;

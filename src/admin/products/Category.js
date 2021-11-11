@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { makeStyles } from '@material-ui/styles';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -19,8 +20,18 @@ import {
 } from '../api-admin';
 import Popup from './Popup';
 
+const useStyles = makeStyles(theme => ({
+    radio: {
+        marginLeft: '5%'
+    },
+    head: {
+        marginTop: '4%'
+    }
+}));
+
 
 function Category(user, shop, category, setCategory){
+    const classes = useStyles();
     const [editCategory, setEditCategory] = useState(false);
 
     const [categories, setCategories] = useState([]);
@@ -37,7 +48,6 @@ function Category(user, shop, category, setCategory){
             const signal = abortController.signal;
 
             const cat = await addCategory(user, name, shop, signal);
-            console.log("Category 34: ", cat);
             setEditCategory(false);
         }catch(e){
             console.log(e);
@@ -50,8 +60,7 @@ function Category(user, shop, category, setCategory){
             const signal = abortController.signal;
 
             if(user.user){
-                const result = await removeCategory(user, category, signal);
-                console.log(result);
+                await removeCategory(user, category, signal);
             }
 
             setRefresh(refresh + 1);
@@ -97,12 +106,12 @@ function Category(user, shop, category, setCategory){
         }
     }, [categories]);
 
-    const showCategory = <FormControl component="fieldset">
+    const showCategory = <FormControl component="fieldset" className={classes.head}>
         <FormLabel component="legend">Category</FormLabel>
         <RadioGroup row aria-label="Category" name="Categories" value={category}>
             {
                 categories instanceof Array ? categories.map((cat) => {
-                    return <FormControlLabel 
+                    return <FormControlLabel  className={classes.radio}
                     key={uuidv4()} 
                     value={cat._id} 
                     control={<Radio />} 
@@ -115,10 +124,10 @@ function Category(user, shop, category, setCategory){
         <Grid container>
             <Grid xs={3} />
             <Grid item xs={3}>
-                <Button onClick={e=>{setEditCategory(true)}}>Add Category</Button>
+                <Button variant='contained' color='primary' onClick={e=>{setEditCategory(true)}}>Add Category</Button>
             </Grid>
             <Grid item xs={3}>
-                <Button onClick={setPopup}>Remove Category</Button>
+                <Button variant='contained' color='primary' onClick={setPopup}>Remove Category</Button>
             </Grid>
             <Grid xs={3} />
         </Grid>
@@ -136,10 +145,10 @@ function Category(user, shop, category, setCategory){
                 </Grid>
                 <Grid />
                 <Grid item xs={2}>
-                    <Button onClick={addCat}>Add</Button>
+                    <Button variant='contained' color='primary' onClick={addCat}>Add</Button>
                 </Grid>
                 <Grid item xs={2}>
-                    <Button onClick={e=>{setEditCategory(false)}}>Close</Button>
+                    <Button variant='contained' color='primary' onClick={e=>{setEditCategory(false)}}>Close</Button>
                 </Grid>
             </Grid>
         </Paper>

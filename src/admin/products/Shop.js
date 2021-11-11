@@ -1,16 +1,30 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { makeStyles } from '@material-ui/styles';
+
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import Chip from '@material-ui/core/Chip';
 
 import { v4 as uuidv4 } from 'uuid';
 import { 
     getShops, 
 } from '../api-admin';
 
+
+const useStyles = makeStyles(theme => ({
+    radio: {
+        marginLeft: '5%'
+    },
+    head: {
+        marginTop: '4%'
+    }
+}));
+
 function Shop(user, shop, setShop){
+    const classes = useStyles();
     
     const [shops, setShops] = useState([]);
 
@@ -43,13 +57,13 @@ function Shop(user, shop, setShop){
     }, [shops]);
 
     return (
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Shop</FormLabel>
+        <FormControl component="fieldset" className={classes.head}>
+          <FormLabel component="legend" >Shop</FormLabel>
           <RadioGroup row aria-label="shop" name="Shops" value={shop}>
               
               {
                   shops instanceof Array ? shops.map((sh) => {
-                    return <FormControlLabel 
+                    return <FormControlLabel className={classes.radio}
                     key={uuidv4()} 
                     onChange={e=>{setShop(sh._id)}} 
                     value={sh._id} 

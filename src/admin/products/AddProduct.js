@@ -44,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     },
     ul: {
         backgroundColor: 'inherit'
+    },
+    mainCard: {
+        marginTop: '10%',
+        paddingLeft: '4%'
     }
 }));
 
@@ -620,9 +624,9 @@ export default function AddProduct(props){
         </Alert>
     </Snackbar>
     <Grow in>
-        <Paper>
+        <Paper className={classes.mainCard}>
             <Typography variant='h6'>Product</Typography>
-            <Grid container>
+            <Grid container spacing={6}>
                 <Grid item xs={12}>
                     <Typography>Image</Typography>
                 </Grid>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { makeStyles } from '@material-ui/styles';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -20,7 +21,18 @@ import {
 } from '../api-admin';
 import Popup from './Popup';
 
+const useStyles = makeStyles(theme => ({
+    radio: {
+        marginLeft: '5%'
+    },
+    head: {
+        marginTop: '4%'
+    }
+}));
+
 function MinorCategory(user, category, minorCategory, setMinorCategory){
+    const classes = useStyles();
+
     const [editMinCategory, setEditMinCategory] = useState(false);
 
     const [minorCategories, setMinorCategories] = useState([]);
@@ -97,12 +109,12 @@ function MinorCategory(user, category, minorCategory, setMinorCategory){
         }
     }, [minorCategories]);
 
-    const showMinCategory = <FormControl component="fieldset">
+    const showMinCategory = <FormControl component="fieldset" className={classes.head}>
         <FormLabel component="legend">Minor Category</FormLabel>
         <RadioGroup row aria-label="Minor Category" name="Minor Categories" value={minorCategory}>
         {
                 minorCategories instanceof Array ? minorCategories.map((minCat) => {
-                    return <FormControlLabel 
+                    return <FormControlLabel className={classes.radio}
                     key={uuidv4()} 
                     value={minCat._id} 
                     control={<Radio />} 
@@ -115,17 +127,17 @@ function MinorCategory(user, category, minorCategory, setMinorCategory){
         <Grid container>
             <Grid xs={3} />
             <Grid item xs={3}>
-                <Button onClick={e=>{setEditMinCategory(true)}}>Add Minor Category</Button>
+                <Button variant='contained' color='primary' onClick={e=>{setEditMinCategory(true)}}>Add Minor Category</Button>
             </Grid>
             <Grid item xs={3}>
-                <Button onClick={setPopup}>Remove Minor Category</Button>
+                <Button variant='contained' color='primary' onClick={setPopup}>Remove Minor Category</Button>
             </Grid>
             <Grid xs={3} />
         </Grid>
     </FormControl>
 
     const addMinCategory = <Grow in>
-        <Paper>
+        <Paper className={classes.head}>
             <Typography variant='h6'>Minor Categories</Typography>
             <Grid container>
                 <Grid item xs={12}>
@@ -136,10 +148,10 @@ function MinorCategory(user, category, minorCategory, setMinorCategory){
                 </Grid>
                 <Grid />
                 <Grid item xs={2}>
-                    <Button onClick={addMinCat}>Add</Button>
+                    <Button variant='contained' color='primary' onClick={addMinCat}>Add</Button>
                 </Grid>
                 <Grid item xs={2}>
-                    <Button onClick={e=>{setEditMinCategory(false)}}>Close</Button>
+                    <Button variant='contained' color='primary' onClick={e=>{setEditMinCategory(false)}}>Close</Button>
                 </Grid>
             </Grid>
         </Paper>

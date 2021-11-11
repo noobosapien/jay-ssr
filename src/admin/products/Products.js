@@ -36,6 +36,15 @@ const useStyles = makeStyles((theme) => ({
     },
     ul: {
         backgroundColor: 'inherit'
+    },
+    radio: {
+        marginLeft: '5%'
+    },
+    head: {
+        marginTop: '4%'
+    },
+    button: {
+        background: theme.palette.common.blue
     }
 }));
 
@@ -140,12 +149,12 @@ function Products(user, minorCat, selecetedProduct, setSelectedProduct){
     
     const showProducts = <Grid container>
     <Grid item xs={12}>
-        <FormControl component="fieldset">
+        <FormControl component="fieldset" className={classes.head}>
             <FormLabel component="legend">Products</FormLabel>
             <RadioGroup row aria-label="Products" name="Product" value={activeProduct?activeProduct._id:0}>
                 {
                 allProducts instanceof Array ? allProducts.map((prod) => {
-                    return <FormControlLabel 
+                    return <FormControlLabel className={classes.radio}
                     key={uuidv4()} 
                     value={prod._id} 
                     control={<Radio />} 
@@ -158,10 +167,10 @@ function Products(user, minorCat, selecetedProduct, setSelectedProduct){
             <Grid container>
             <Grid xs={3} />
             <Grid item xs={3}>
-                <Button onClick={e=>{setEditProduct(true)}}>Add Product</Button>
+                <Button variant='contained' color='primary' className={classes.button} onClick={e=>{setEditProduct(true)}}>Add Product</Button>
             </Grid>
             <Grid item xs={3}>
-                <Button onClick={setPopup}>Remove Product</Button>
+                <Button variant='contained' color='primary' className={classes.button} onClick={setPopup}>Remove Product</Button>
             </Grid>
             <Grid xs={3} />
         </Grid>

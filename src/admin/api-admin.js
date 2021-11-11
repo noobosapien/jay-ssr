@@ -25,6 +25,7 @@ const getCategories = async(user, shop, signal) => {
     try{
         if(user.user.token){
 
+            // let response = await fetch(`/admin/categories?shop=${shop}`,
             let response = await fetch(`/admin/categories/${shop}`,
             {
                 method: 'GET',

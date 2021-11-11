@@ -30,7 +30,7 @@ const images = [
     {
       url: 'https://jaytronics.s3.ap-southeast-2.amazonaws.com/categories/metering.png',
       urlSelected: 'https://jaytronics.s3.ap-southeast-2.amazonaws.com/categories/metering+selected.png',
-      title: 'Meters',
+      title: 'Cameras & Security',
       width: '100%',
       imgRef: null
     },
@@ -44,14 +44,14 @@ const images = [
     {
       url: 'https://jaytronics.s3.ap-southeast-2.amazonaws.com/categories/HVAC.png',
       urlSelected: 'https://jaytronics.s3.ap-southeast-2.amazonaws.com/categories/HVAC+selected.png',
-      title: 'HVAC',
+      title: 'Sound & Video',
       width: '100%',
       imgRef: null
     },
     {
       url: 'https://jaytronics.s3.ap-southeast-2.amazonaws.com/categories/Trade.png',
       urlSelected: 'https://jaytronics.s3.ap-southeast-2.amazonaws.com/categories/Trade+selected.png',
-      title: 'Trade Equipment',
+      title: 'Tools & Test equipment',
       width: '100%',
       imgRef: null
     },

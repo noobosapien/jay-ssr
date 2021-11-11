@@ -32,6 +32,7 @@ const getShops = async (req, res, next) => {
 
 const getCategories = async (req, res, next) => {
     try{
+        // const categories = await Category.find({shop: req.query.shop});
         const categories = await Category.find({shop: req.shop});
         var results = [];
     
@@ -358,12 +359,14 @@ const getProducts = async (req, res, next) => {
 
         var results = [];
     
-        products ? products.forEach(product => {
-            results.push({
-                _id: product._id,
-                name: product.name,
+        if(products){
+                products.forEach(product => {
+                results.push({
+                    _id: product._id,
+                    name: product.name,
+                });
             });
-        }) : undefined;
+        }
 
         res.json({products: results});
     }catch(e){
