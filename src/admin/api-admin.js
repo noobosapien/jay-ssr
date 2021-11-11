@@ -505,6 +505,28 @@ const getUserInfo = async (user, customer, signal) => {
     }
 }
 
+const isAdmin = async (user, signal) => {
+    try{
+        if(user.user.token){
+
+            let response = await fetch(`/admin/isAdmin`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
 export {
     getShops,
     getCategories,
@@ -527,5 +549,6 @@ export {
     getNewOrders,
     setOrderToShipping,
     getAllUsers,
-    getUserInfo
+    getUserInfo,
+    isAdmin
 }

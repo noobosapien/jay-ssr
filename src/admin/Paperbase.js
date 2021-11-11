@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+import { useHistory } from "react-router-dom";
+
 import PropTypes from 'prop-types';
 import { ThemeProvider, withStyles } from '@material-ui/core/styles';
 import { createTheme } from '@material-ui/core/styles';
@@ -9,6 +11,9 @@ import Link from '@material-ui/core/Link';
 import Navigator from './Navigator';
 import Content from './Content';
 import Header from './Header';
+import { UserContext } from '../App';
+
+import { isAdmin } from './api-admin';
 
 function Copyright() {
   return (
@@ -168,6 +173,29 @@ function Paperbase(props) {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [tab, setTab] = React.useState("");
+  const history = useHistory();
+  const userContext = useContext(UserContext);
+
+  useEffect(() => {
+
+    const getAdmin = async () => {
+      const abortController = new AbortController();
+      const signal = abortController.signal;
+
+      const admin = await isAdmin({user: userContext.user}, signal);
+
+      if(Number(admin.status) === 0){
+        history.push('/');
+      }
+    }
+
+    if(userContext.user === null){
+      history.push('/');
+    }
+
+    getAdmin();
+
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

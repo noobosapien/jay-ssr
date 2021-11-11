@@ -4,6 +4,9 @@ const adminCtrl = require('../controllers/admin-controller');
 
 const router = express.Router();
 
+router.route('/admin/isAdmin')
+.get(authCtrl.requireSignin, adminCtrl.getIsAdmin);
+
 router.route('/admin/shops')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getShops);
 

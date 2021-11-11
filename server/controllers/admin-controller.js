@@ -919,6 +919,20 @@ const getCustomer = async (req, res, next) => {
     }
 }
 
+const getIsAdmin = async (req, res, next) => {
+    const user = await User.findById(req.auth._id);
+
+    if(user.admin === true){
+        return res.json({
+            status: 1
+        });
+    }
+
+    return res.json({
+        status: 0
+    });
+}
+
 module.exports = {
     getShops,
     getCategories,
@@ -950,5 +964,6 @@ module.exports = {
 
     getAllUsers,
     setCustomer,
-    getCustomer
+    getCustomer,
+    getIsAdmin
 }
