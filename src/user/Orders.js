@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { v4 as uuidv4 } from 'uuid';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
+import Pagination from '@mui/material/Pagination';
 
 import { UserContext } from '../App';
 
@@ -23,7 +24,14 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
           borderBottom: 'unset',
         },
-      },
+    },
+    pages: {
+        // background: 'green',
+    },
+    pagination: {
+        marginBottom: '15%',
+        marginTop: '15%',
+    }
 }));
 
 
@@ -32,8 +40,10 @@ export default function Orders(props){
 
     const userContext = useContext(UserContext);
     const [orderIDs, setOrderIDs] = useState([]);
-    const [allowed, setAllowed] = useState(1);
+    const [allowed, setAllowed] = useState(0);
     const [allOrders, setAllOrders] = useState();
+    const [pages, setPages] = useState(1);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         const getAllOrders = async () => {
@@ -42,6 +52,11 @@ export default function Orders(props){
             const result = await getOrders({user: userContext.user}, signal);
             if(result && result.orders instanceof Array){
                 setOrderIDs([...result.orders]);
+
+                if(Math.floor(result.orders.length % 2) === 0)
+                    setPages(Math.floor(result.orders.length / 2));
+                else
+                    setPages(Math.floor(result.orders.length / 2) + 1);
             }
         }
 
@@ -52,7 +67,12 @@ export default function Orders(props){
 
         var orders = [];
 
-        for(var i = 0; i < orderIDs.length ; i++){
+        for(var i = allowed; i < allowed + 2 ; i++){
+
+            if(orderIDs[i] === undefined){
+                break;
+            }
+
             orders.push(<>
                 <Grid key={uuidv4()} item xs={12} lg={6} style={{marginBottom: '5%'}}>
                     <Order id={orderIDs[i]} />
@@ -63,10 +83,11 @@ export default function Orders(props){
         }
         setAllOrders(orders);
 
-    }, [orderIDs]);
+    }, [orderIDs, allowed]);
 
-    const addOneToAllowed = e => {
-        setAllowed(allowed+2);
+    const addOneToAllowed = (e, p) => {
+        setAllowed((p * 2) - 2);
+        setPage(p);
     }
     
     return <> 
@@ -80,7 +101,7 @@ export default function Orders(props){
 
             {
                 allOrders instanceof Array ? allOrders.map((ao, i) => 
-                i <= allowed ?
+                i <= 1 ?
                 <> {ao} </> :
                 <></>
             ) : undefined
@@ -88,9 +109,14 @@ export default function Orders(props){
             <Grid item xs={12}/>
 
             <Grid item>
-                <Button endIcon={<ArrowDropDownCircleIcon/>} variant='outlined' onClick={addOneToAllowed}>
-                    Load more
-                </Button>
+                <Pagination
+                count={pages} 
+                page={page}
+                variant='text' 
+                color='primary' 
+                classes={{text: classes.pages}}
+                onChange={addOneToAllowed}
+                className={classes.pagination} />
             </Grid>
         </Grid>
     </>

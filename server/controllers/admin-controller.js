@@ -838,7 +838,7 @@ const getNewOrders = async (req, res, next) => {
     try{
         const result = await Order.find({
             status: "Processing"
-        });
+        }, null, {}).sort('-uid').exec();
 
         var orders = [];
 
@@ -849,7 +849,7 @@ const getNewOrders = async (req, res, next) => {
             }
 
         }
-        
+
         return res.json({
             orders
         });
@@ -876,6 +876,33 @@ const putNewOrder = async (req, res, next) => {
     }catch(e){
         return res.json({
             message: "An error occured while updating the order"
+        });
+    }
+}
+
+const getProcOrders = async (req, res, next) => {
+    try{
+        const result = await Order.find({
+            status: "Shipped"
+        }, null, {}).sort('-uid').exec();
+
+        var orders = [];
+
+        if(result instanceof Array){
+
+            for(var i = 0; i < result.length; i++){
+                orders.push(result[i]);
+            }
+
+        }
+        
+        return res.json({
+            orders
+        });
+
+    }catch(e){
+        return res.json({
+            message: "An error occured while retrieving processed orders"
         });
     }
 }
@@ -965,5 +992,6 @@ module.exports = {
     getAllUsers,
     setCustomer,
     getCustomer,
-    getIsAdmin
+    getIsAdmin,
+    getProcOrders
 }

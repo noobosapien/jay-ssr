@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         marginLeft: '12%',
         marginRight: '12%',
+        paddingTop: '5%',
         height: '50px',
         minWidth: '270px',
         maxWidth: '270px',
@@ -123,16 +124,16 @@ const useStyles = makeStyles((theme) => ({
     removeButton: {
         background: 'rgb(63,60,78)',
         color: 'white',
-        marginTop: '20%'
+        // marginTop: '20%'
     },
     inCartHeading: {
         // fontFamily: 'Lexend Exa',
         fontSize: '0.8em',
-        marginTop: '10%'
+        // marginTop: '10%'
     },
     inCartAmount: {
         // fontFamily: 'Lexend Exa',
-        marginTop: '10%'
+        // marginTop: '10%'
     },
     watermark: {
         opacity: '0.2',
@@ -314,19 +315,19 @@ export default function ProductCard(props){
         <Grid item xs={12}>
             <Grow in={inCart}>
             <Card className={classes.paperBelow}>
-                <Grid container alignItems="center" justifyContent="center">
-                    <Grid item xs={1} />
-                    <Grid item xs={3}>
+                <Grid container alignItems="center" justifyContent="space-around">
+                    {/* <Grid item xs={1} /> */}
+                    <Grid item>
                         <Typography className={classes.inCartHeading}>In Cart:</Typography>
                     </Grid>
 
-                    <Grid item xs={1} />
-                    <Grid item xs={3}>
+                    {/* <Grid item xs={1} /> */}
+                    <Grid item>
                         <Typography className={classes.inCartAmount}>{amount}</Typography>
                     </Grid>
 
-                    <Grid item xs={1} />
-                    <Grid item xs={2}>
+                    {/* <Grid item xs={1} /> */}
+                    <Grid item>
                         <Button className={classes.removeButton} onClick={removeFromCart}>Remove</Button>
                     </Grid>
                 </Grid>

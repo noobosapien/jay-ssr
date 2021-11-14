@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
+import Pagination from '@mui/material/Pagination';
 import Typography from '@material-ui/core/Typography';
 
 import OrderTemplate from './OrderTemplate';
@@ -64,7 +65,7 @@ export default function NewOrders(props){
     }, [newOrders]);
     
     return <> 
-    <Grid container>
+    <Grid container justify='center'>
         <Grid item>
             <Typography>Total in new orders: ${total/100}</Typography>
         </Grid>
@@ -77,6 +78,13 @@ export default function NewOrders(props){
                 </>
             })
         }
+        <Grid item>
+            <Pagination
+            count={4} 
+            variant='text' 
+            color='primary' 
+            size='large' />
+        </Grid>
     </Grid>
     </>
 }

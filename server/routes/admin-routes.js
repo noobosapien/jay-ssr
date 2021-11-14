@@ -48,6 +48,9 @@ router.route('/admin/neworders')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getNewOrders)
 .put(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.putNewOrder);
 
+router.route('/admin/procorders')
+.get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getProcOrders);
+
 router.route('/admin/allUsers')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getAllUsers);
 

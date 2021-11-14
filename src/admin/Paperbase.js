@@ -184,7 +184,7 @@ function Paperbase(props) {
 
       const admin = await isAdmin({user: userContext.user}, signal);
 
-      if(Number(admin.status) === 0){
+      if(admin && Number(admin.status) === 0){
         history.push('/');
       }
     }

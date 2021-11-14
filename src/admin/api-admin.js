@@ -439,6 +439,28 @@ const getNewOrders = async (user, signal) => {
     }
 }
 
+const getProcessedOrders = async (user, signal) => {
+    try{
+        if(user.user.token){
+
+            let response = await fetch(`/admin/procorders`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
 const setOrderToShipping = async (user, order, signal) => {
     try{
         if(user.user.token){
@@ -550,5 +572,6 @@ export {
     setOrderToShipping,
     getAllUsers,
     getUserInfo,
-    isAdmin
+    isAdmin,
+    getProcessedOrders
 }

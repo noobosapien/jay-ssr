@@ -76,6 +76,9 @@ export default function OrderTemplate(props){
                     <Card className={classes.orderHeading}>
                         <Grid container justify='space-evenly'>
                             <Grid item>
+                            {order ? <Typography>{order.uid}</Typography> : undefined}
+                            </Grid>
+                            <Grid item>
                             {order ? <Typography>{new Date(order.created).toString()}</Typography> : undefined}
                             </Grid>
                             <Grid item>

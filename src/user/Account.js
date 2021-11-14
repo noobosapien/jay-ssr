@@ -56,6 +56,14 @@ const useStyles = makeStyles(theme => ({
     section: {
         marginTop: '4%',
         marginBottom: '2%'
+    },
+    mainCard: {
+        [theme.breakpoints.up('xs')]: {
+            marginTop: '5%'
+        },
+        [theme.breakpoints.down('xs')]: {
+            marginTop: '15%'
+        },
     }
 }));
 
@@ -96,7 +104,7 @@ export default function Account(props){
     }
 
     return <>
-        <Card>
+        <Card className={classes.mainCard}>
             <Grid container justify='center'>
                 
                 <Grid className={classes.section} xs={12} md={5} item>

@@ -19,6 +19,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
 import Pagination from '@mui/material/Pagination';
 import ProductCard from './ProductCard';
 import Skeletons from './Skeletons';
@@ -473,7 +474,14 @@ export default function Category({match}){
                         </Grid>
 
                         <Grid item>
-                            <Pagination className={classes.pages} page={page} onChange={onPageChange} count={pages} variant='outlined' color='secondary' size='large' />
+                            <Pagination 
+                            className={classes.pages} 
+                            page={page} 
+                            onChange={onPageChange} 
+                            count={pages} 
+                            variant='outlined' 
+                            color='secondary' 
+                            size='large' />
                         </Grid>
                     </Grid>
 

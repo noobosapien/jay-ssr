@@ -5,10 +5,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import NewOrders from './orders/NewOrders';
+import ProcessedOrders from './orders/ProcessedOrders';
 
 
 const useStyles = makeStyles((theme) => ({
-    
+    heading: {
+        marginTop: '20%'
+    }
 }));
 
 export default function AllOrders(props){
@@ -23,18 +26,26 @@ export default function AllOrders(props){
             </Grid>
             <Grid item xs={12} />
 
-            <Grid item xs={2}>
-                <Typography>New Orders</Typography>
+            <Grid item>
+                <Typography variant='h3'>New Orders</Typography>
             </Grid>
-            <Grid item xs={10} />
-            <Grid item xs={12} >
+            <Grid item xs={12} />
+
+            <Grid item>
                 <NewOrders update={update} setUpdate={setUpdate}/>
             </Grid>
+            <Grid item xs={12} />
 
-            <Grid item xs={2}>
-                <Typography>Processed Orders</Typography>
+
+            <Grid item className={classes.heading}>
+                <Typography variant='h3'>Processed Orders</Typography>
             </Grid>
-            <Grid item xs={10} />
+            <Grid item xs={12} />
+            
+            <Grid item>
+                <ProcessedOrders update={update} setUpdate={setUpdate}/>
+            </Grid>
+            <Grid item xs={12} />
         </Grid>
     </>
 }

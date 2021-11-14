@@ -74,7 +74,7 @@ const stripeWebHook = async (req, res, next) => {
                               name: prod.name, 
                               stock: prod.stock, 
                               image: prod.image,
-                              uid: 'edit this later'
+                              uid: prod.uid
                             }, amount: customer.cart[i].amount});
 
                             if(!prod.uid)
