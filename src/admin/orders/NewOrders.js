@@ -10,7 +10,7 @@ import OrderTemplate from './OrderTemplate';
 
 import { UserContext } from '../../App';
 
-import { getNewOrders } from '../api-admin';
+import { getNewOrders, getNewOrderPages, getNewOrderTotal } from '../api-admin';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +28,31 @@ export default function NewOrders(props){
 
     const [newOrders, setNewOrders] = useState([]);
     const [total, setTotal] = useState(0);
+    const [pages, setPages] = useState(1);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        const getOrderPages = async () => {
+            try{
+                const abortController = new AbortController();
+                const signal = abortController.signal;
+
+                if(userContext.user){
+                    const result = await getNewOrderPages({user: userContext.user}, signal);
+                    if(result.pages){
+                        setPages(Number(result.pages));
+                        if(page > result.pages)
+                            setPage(result.pages);
+                    }
+                }
+    
+            }catch(e){
+                console.log(e);
+            }
+        }
+
+        getOrderPages();
+    }, [update, userContext.user]);
 
     useEffect(() => {
         const getOrders = async () => {
@@ -36,7 +61,7 @@ export default function NewOrders(props){
                 const signal = abortController.signal;
 
                 if(userContext.user){
-                    const result = await getNewOrders({user: userContext.user}, signal);
+                    const result = await getNewOrders(page, {user: userContext.user}, signal);
                     if(result.orders){
                         setNewOrders([...result.orders]);
                     }
@@ -48,21 +73,33 @@ export default function NewOrders(props){
         }
 
         getOrders();
-    }, [update]);
+    }, [update, page, userContext.user]);
 
     useEffect(() => {
-        var orderTotal = 0;
+        const getOrders = async () => {
+            try{
+                const abortController = new AbortController();
+                const signal = abortController.signal;
 
-        if(newOrders instanceof Array){
-            newOrders.forEach((ord) => {
-                orderTotal += ord.price;
-            });
-            setTotal(orderTotal);
+                if(userContext.user){
+                    const result = await getNewOrderTotal({user: userContext.user}, signal);
+                    if(result.total){
+                        setTotal(result.total);
+                    }
+                }
+    
+            }catch(e){
+                console.log(e);
+            }
         }
 
-        orderTotal = 0;
+        getOrders();
 
-    }, [newOrders]);
+    }, [update, userContext.user]);
+
+    const onPageClick = (e, p) => {
+        setPage(p);
+    }
     
     return <> 
     <Grid container justify='center'>
@@ -73,17 +110,19 @@ export default function NewOrders(props){
             newOrders.map((order, i) => {
                 return <>
                 <Grid item className={classes.order}>
-                    <OrderTemplate update={update} setUpdate={setUpdate} order={order} />
+                    <OrderTemplate isProc={false} update={update} setUpdate={setUpdate} order={order} />
                 </Grid>
                 </>
             })
         }
         <Grid item>
             <Pagination
-            count={4} 
+            count={pages}
+            page={page} 
             variant='text' 
             color='primary' 
-            size='large' />
+            size='large'
+            onChange={onPageClick} />
         </Grid>
     </Grid>
     </>

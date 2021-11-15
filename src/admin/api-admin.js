@@ -417,11 +417,11 @@ const updateProduct = async (user, product, signal) => {
     }
 }
 
-const getNewOrders = async (user, signal) => {
+const getNewOrders = async (page, user, signal) => {
     try{
         if(user.user.token){
 
-            let response = await fetch(`/admin/neworders`,
+            let response = await fetch(`/admin/neworders?page=${page}`,
             {
                 method: 'GET',
                 signal,
@@ -439,11 +439,99 @@ const getNewOrders = async (user, signal) => {
     }
 }
 
-const getProcessedOrders = async (user, signal) => {
+const getNewOrderPages = async (user, signal) => {
     try{
         if(user.user.token){
 
-            let response = await fetch(`/admin/procorders`,
+            let response = await fetch(`/admin/neworderpages`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const getNewOrderTotal = async (user, signal) => {
+    try{
+        if(user.user.token){
+
+            let response = await fetch(`/admin/newordertotal`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const getProcessedOrders = async (page, user, signal) => {
+    try{
+        if(user.user.token){
+
+            let response = await fetch(`/admin/procorders?page=${page}`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const getProcOrderPages = async (user, signal) => {
+    try{
+        if(user.user.token){
+
+            let response = await fetch(`/admin/procorderpages`,
+            {
+                method: 'GET',
+                signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.user.token}`
+                },
+            });
+            return await response.json();
+        }
+        
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const getProcOrderTotal = async (user, signal) => {
+    try{
+        if(user.user.token){
+
+            let response = await fetch(`/admin/procordertotal`,
             {
                 method: 'GET',
                 signal,
@@ -573,5 +661,9 @@ export {
     getAllUsers,
     getUserInfo,
     isAdmin,
-    getProcessedOrders
+    getProcessedOrders,
+    getNewOrderPages,
+    getNewOrderTotal,
+    getProcOrderPages,
+    getProcOrderTotal
 }

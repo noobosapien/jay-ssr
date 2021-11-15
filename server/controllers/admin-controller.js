@@ -836,9 +836,10 @@ const setMinCatID = async (req, res, next, id) => {
 
 const getNewOrders = async (req, res, next) => {
     try{
+        const page = req.query.page;
         const result = await Order.find({
             status: "Processing"
-        }, null, {}).sort('-uid').exec();
+        }, null, {limit: 2, skip: 2 * (page-1)}).sort('-uid').exec();
 
         var orders = [];
 
@@ -880,11 +881,72 @@ const putNewOrder = async (req, res, next) => {
     }
 }
 
-const getProcOrders = async (req, res, next) => {
+const getNewOrderPages = async (req, res, next) => {
     try{
         const result = await Order.find({
+            status: "Processing"
+        });
+
+        if(result instanceof Array){
+
+            if(result.length % 2 === 0)
+                return res.json({
+                    pages: Math.floor(result.length / 2)
+                });
+            else
+                return res.json({
+                    pages: Math.floor((result.length / 2) + 1)
+                });
+
+        }
+
+        return res.json({
+            pages: 1
+        });
+
+    }catch(e){
+        return res.json({
+            message: "An error occured while retrieving new orders"
+        });
+    }
+}
+
+const getNewOrderTotal = async (req, res, next) => {
+    try{
+        const result = await Order.find({
+            status: "Processing"
+        });
+
+        if(result instanceof Array){
+
+            var orderTotal = 0;
+
+            result.forEach((ord) => {
+                orderTotal += ord.price;
+            });
+
+            return res.json({
+                total: orderTotal
+            });
+        }
+
+        return res.json({
+            total: 0
+        });
+
+    }catch(e){
+        return res.json({
+            message: "An error occured while retrieving new orders"
+        });
+    }
+}
+
+const getProcOrders = async (req, res, next) => {
+    try{
+        const page = req.query.page;
+        const result = await Order.find({
             status: "Shipped"
-        }, null, {}).sort('-uid').exec();
+        }, null, {limit: 2, skip: 2 * (page-1)}).sort('-uid').exec();
 
         var orders = [];
 
@@ -895,14 +957,74 @@ const getProcOrders = async (req, res, next) => {
             }
 
         }
-        
+
         return res.json({
             orders
         });
 
     }catch(e){
         return res.json({
-            message: "An error occured while retrieving processed orders"
+            message: "An error occured while retrieving new orders"
+        });
+    }
+}
+
+const getProcOrderPages = async (req, res, next) => {
+    try{
+        const result = await Order.find({
+            status: "Shipped"
+        });
+
+        if(result instanceof Array){
+
+            if(result.length % 2 === 0)
+                return res.json({
+                    pages: Math.floor(result.length / 2)
+                });
+            else
+                return res.json({
+                    pages: Math.floor((result.length / 2) + 1)
+                });
+
+        }
+
+        return res.json({
+            pages: 1
+        });
+
+    }catch(e){
+        return res.json({
+            message: "An error occured while retrieving new orders"
+        });
+    }
+}
+
+const getProcOrderTotal = async (req, res, next) => {
+    try{
+        const result = await Order.find({
+            status: "Shipped"
+        });
+
+        if(result instanceof Array){
+
+            var orderTotal = 0;
+
+            result.forEach((ord) => {
+                orderTotal += ord.price;
+            });
+
+            return res.json({
+                total: orderTotal
+            });
+        }
+
+        return res.json({
+            total: 0
+        });
+
+    }catch(e){
+        return res.json({
+            message: "An error occured while retrieving new orders"
         });
     }
 }
@@ -993,5 +1115,9 @@ module.exports = {
     setCustomer,
     getCustomer,
     getIsAdmin,
-    getProcOrders
+    getProcOrders,
+    getNewOrderPages,
+    getNewOrderTotal,
+    getProcOrderPages,
+    getProcOrderTotal
 }

@@ -49,6 +49,11 @@ const useStyles = makeStyles(theme => ({
         height: 0,
         borderRight: '100px solid transparent',
         borderTop: `100px solid ${theme.palette.common.blue}`
+    },
+    login: {
+        borderColor: 'rgba(0,125,147,1)',
+        color: 'rgba(0,125,147,1)',
+        marginBottom: '10%'
     }
 }));
 
@@ -69,14 +74,14 @@ const ForgotButton = withStyles({
 
 const ContinueButton = withStyles({
     root: {
-      background: 'radial-gradient(circle, rgba(74,0,124,1) 0%, rgba(0,125,147,1) 100%)',
+    //   background: 'rgba(0,125,147,1)',
       borderRadius: 10,
       border: 0,
-      color: 'white',
+    //   color: 'white',
       height: 38,
       padding: '0 30px',
       marginBottom: '4%',
-      boxShadow: '0 3px 5px 2px rgba(0,125,147,0.3)',
+    //   boxShadow: '0 3px 5px 2px rgba(0,125,147,0.3)',
     },
     label: {
       textTransform: 'capitalize',
@@ -437,7 +442,9 @@ export default function LoginModal(props){
                     {
                         loading ? <CircularProgress color='primary' /> :
                         <Grid item>
-                            <ContinueButton onClick={registerDone} startIcon={<CheckCircleOutline />}>Done</ContinueButton>
+                            <Button className={classes.login} variant='outlined' onClick={registerDone} startIcon={<CheckCircleOutline />}>
+                                Done
+                            </Button>
                         </Grid>
                     }
                     
@@ -445,11 +452,15 @@ export default function LoginModal(props){
                     {
                         loading ? <CircularProgress color='primary' /> : <>
                         <Grid item>
-                            <ContinueButton endIcon={<DoubleArrow />} onClick={signinUser}>Signin</ContinueButton>
+                            <Button className={classes.login} variant='outlined' endIcon={<DoubleArrow />} onClick={signinUser}>
+                                Signin
+                            </Button>
                         </Grid>
                         <Grid item xs={2} />
                         <Grid item>
-                            <ContinueButton endIcon={<Assignment />} onClick={onRegisterClick}>Register</ContinueButton>
+                            <Button className={classes.login} variant='outlined' endIcon={<Assignment />} onClick={onRegisterClick}>
+                                Register
+                            </Button>
                         </Grid>
                     </>
                     }

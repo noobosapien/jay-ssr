@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderTemplate(props){
 
-    const { order, update, setUpdate } = props;
+    const { order, update, setUpdate, isProc } = props;
     const classes = useStyles();
 
     const userContext = useContext(UserContext);
@@ -148,7 +148,7 @@ export default function OrderTemplate(props){
 
                 </Grid>
                 <Grid item xs={12} />
-                    <Button variant='outlined' onClick={setPopup}>Done</Button>
+                    { isProc ? <></> : <Button variant='outlined' onClick={setPopup}>Done</Button> }
                 <Grid item>
 
                 </Grid>

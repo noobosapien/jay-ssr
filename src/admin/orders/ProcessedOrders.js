@@ -11,7 +11,7 @@ import OrderTemplate from './OrderTemplate';
 
 import { UserContext } from '../../App';
 
-import { getProcessedOrders } from '../api-admin';
+import { getProcessedOrders, getProcOrderPages, getProcOrderTotal } from '../api-admin';
 
 const useStyles = makeStyles((theme) => ({
     order: {
@@ -29,6 +29,31 @@ export default function ProcessedOrders(props){
     const [allOrders, setAllOrders] = useState([]);
     const [curIndex, setCurIndex] = useState(0);
     const [total, setTotal] = useState(0);
+    const [pages, setPages] = useState(1);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        const getOrderPages = async () => {
+            try{
+                const abortController = new AbortController();
+                const signal = abortController.signal;
+
+                if(userContext.user){
+                    const result = await getProcOrderPages({user: userContext.user}, signal);
+                    if(result.pages){
+                        setPages(Number(result.pages));
+                        if(page > result.pages)
+                            setPage(result.pages);
+                    }
+                }
+    
+            }catch(e){
+                console.log(e);
+            }
+        }
+
+        getOrderPages();
+    }, [update, userContext.user]);
 
     useEffect(() => {
         const getOrders = async () => {
@@ -37,7 +62,7 @@ export default function ProcessedOrders(props){
                 const signal = abortController.signal;
 
                 if(userContext.user){
-                    const result = await getProcessedOrders({user: userContext.user}, signal);
+                    const result = await getProcessedOrders(page, {user: userContext.user}, signal);
                     if(result.orders){
                         setProcOrders([...result.orders]);
                     }
@@ -49,52 +74,57 @@ export default function ProcessedOrders(props){
         }
 
         getOrders();
-    }, [update]);
+    }, [update, userContext.user, page]);
 
     useEffect(() => {
-        var orderTotal = 0;
+        const getOrders = async () => {
+            try{
+                const abortController = new AbortController();
+                const signal = abortController.signal;
 
-        if(procOrders instanceof Array){
-            procOrders.forEach((ord) => {
-                orderTotal += ord.price;
-            });
-            setTotal(orderTotal);
+                if(userContext.user){
+                    const result = await getProcOrderTotal({user: userContext.user}, signal);
+                    if(result.total){
+                        setTotal(result.total);
+                    }
+                }
+    
+            }catch(e){
+                console.log(e);
+            }
         }
 
-        orderTotal = 0;
+        getOrders();
 
-    }, [procOrders]);
+    }, [update, userContext.user]);
 
-    const incIndex = e => {
-        setCurIndex(curIndex + 4);
+    const onPageClick = (e, p) => {
+        setPage(p);
     }
 
     return <> 
     <Grid container justify='center'>
         <Grid item>
-            <Typography>Total in processed orders: ${total/100}</Typography>
+            <Typography>Total in new orders: ${total/100}</Typography>
         </Grid>
         {
             procOrders.map((order, i) => {
                 return <>
                 <Grid item className={classes.order}>
-                    <OrderTemplate update={update} setUpdate={setUpdate} order={order} />
+                    <OrderTemplate isProc={true} update={update} setUpdate={setUpdate} order={order} />
                 </Grid>
                 </>
             })
         }
-
-        <Grid item xs={12}/>
         <Grid item>
             <Pagination
-            count={4} 
+            count={pages}
+            page={page} 
             variant='text' 
             color='primary' 
-            size='large' />
+            size='large'
+            onChange={onPageClick} />
         </Grid>
-        {/* <Grid item>
-            <Button color='primary' variant='outlined' onClick={incIndex}>Load more</Button>
-        </Grid> */}
     </Grid>
     </>
 

@@ -48,8 +48,20 @@ router.route('/admin/neworders')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getNewOrders)
 .put(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.putNewOrder);
 
+router.route('/admin/neworderpages')
+.get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getNewOrderPages);
+
+router.route('/admin/newordertotal')
+.get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getNewOrderTotal);
+
+router.route('/admin/procorderpages')
+.get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getProcOrderPages);
+
 router.route('/admin/procorders')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getProcOrders);
+
+router.route('/admin/procordertotal')
+.get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getProcOrderTotal);
 
 router.route('/admin/allUsers')
 .get(authCtrl.requireSignin, authCtrl.isAdmin, adminCtrl.getAllUsers);
