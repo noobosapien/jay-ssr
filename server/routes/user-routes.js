@@ -30,6 +30,13 @@ router.route('/api/getOrders')
 router.route('/api/getOrderDetails')
 .get(authCtrl.requireSignin, userCtrl.getOrderDetails);
 
+router.route('/api/getForgotPWLink')
+.get(userCtrl.getRCPWL)
+.post(userCtrl.postRCPWL);
+
+router.route('/api/CPWFL')
+.put(userCtrl.cpwfl)
+
 router.param('userId', userCtrl.userByID);
 
 module.exports = router;

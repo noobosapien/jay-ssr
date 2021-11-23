@@ -122,10 +122,6 @@ export default function Account(props){
                     
                 </Grid>
                 <Grid item xs={12} />
-                
-                {/* <Grid className={classes.section} item xs={12} md={5}>
-                    <Addresses />
-                </Grid> */}
                         
                 <Grid className={classes.section} item>
                     <Orders />

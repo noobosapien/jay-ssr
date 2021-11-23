@@ -13,6 +13,7 @@ import Paperbase from './admin/Paperbase';
 import Cart from './payments/Cart';
 import Checkout from './payments/Checkout';
 import OrderSuccess from './payments/OrderSuccess';
+import ForgotPW from './core/ForgotPW';
 
 const MainRouter = () => {
 
@@ -21,12 +22,13 @@ const MainRouter = () => {
             <Header/>
             <Switch>
                 <Route path="/user/account" component={Account} exact />
+                <Route path='/forgotPW/:fp' component={ForgotPW} exact />
                 <Route path='/cart' component={Cart} exact />
                 <Route path='/checkout' component={Checkout} exact />
                 <Route path="/admin" component={Paperbase} exact />
-                {/* <Route path="/admin" component={AdminPanel} exact /> */}
                 <Route path="/contact" component={Contact} exact />
                 <Route path="/about" component={About} exact />
+                
                 
                 <Route path="/cat/:shop/" component={Category} />
                 <Route path="/prod/:prod" component={ProductPage} />

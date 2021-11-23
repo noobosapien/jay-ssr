@@ -54,6 +54,13 @@ const UserSchema = new mongoose.Schema({
     shipping: {
         type: Number
     },
+    forgottenLinks: [{
+        type: String
+    }],
+    successLinks: [{
+        type: String
+    }],
+
 
     salt: String
 });

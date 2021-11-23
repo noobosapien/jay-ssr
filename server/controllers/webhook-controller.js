@@ -14,7 +14,6 @@ const stripeWebHook = async (req, res, next) => {
     const payload = req.body;
     const sig = req.headers['stripe-signature'];
     let event;
-
     let stripeCheckoutID = "";
     let items = [];
     let price = 0;

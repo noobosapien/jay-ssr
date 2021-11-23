@@ -22,8 +22,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 import PWSI from '../../user/PWSI';
 
-import {registerUser} from '../api-core';
-import {signin} from '../../auth/api-auth';
+import { registerUser, getRecoveryEmail } from '../api-core';
+import { signin } from '../../auth/api-auth';
 import auth from '../../auth/auth-helper';
 
 function Alert(props) {
@@ -54,7 +54,10 @@ const useStyles = makeStyles(theme => ({
         borderColor: 'rgba(0,125,147,1)',
         color: 'rgba(0,125,147,1)',
         marginBottom: '10%'
-    }
+    },
+    space: {
+        marginTop: '5%',
+    },
 }));
 
 const ForgotButton = withStyles({
@@ -85,7 +88,7 @@ const ContinueButton = withStyles({
     },
     label: {
       textTransform: 'capitalize',
-    },
+    }
 })(Button);
 
 export default function LoginModal(props){
@@ -101,22 +104,31 @@ export default function LoginModal(props){
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [isValid, setIsValid] = useState(false);
+    const [forgotten, setForgotten] = useState(false);
 
     const [firstNameError, setFirstNameError] = useState(false);
     const [lastNameError, setLastNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [confPasswordError, setConfPasswordError] = useState(false);
+    const [recEmailError, setRecEmailError] = useState(false);
 
     const [message, setMessage] = useState("");
     const [openMessage, setOpenMessage] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [openSuccessMessage, setOpenSuccessMessage] = useState(false);
 
     const firstNameRef = useRef();
     const lastNameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
+    const forgotPasswordRef = useRef();
+
+    const clickForgotButton = e => {
+        setForgotten(true);
+        setRecEmailError(false);
+    }
 
     const closeClicked = e => {
         setEmail("");
@@ -124,6 +136,8 @@ export default function LoginModal(props){
         setConfirmPassword("");
         setFirstName("");
         setLastName("");
+        setRecEmailError(false);
+        setForgotten(false);
         setIsValid(false);
         setOpenModal(false);
     }
@@ -137,6 +151,7 @@ export default function LoginModal(props){
         setIsValid(false);
         setEmailError(false);
         setPasswordError(false);
+        setRecEmailError(false);
 
         emailRef.current.value = "";
         passwordRef.current.value = "";
@@ -160,6 +175,7 @@ export default function LoginModal(props){
         setFirstNameError(false);
         setLastNameError(false);
         setConfPasswordError(false);
+        setRecEmailError(false);
 
         emailRef.current.value = "";
         passwordRef.current.value = "";
@@ -174,7 +190,8 @@ export default function LoginModal(props){
             emailRef.current.value === "" ? setEmailError(true) : setEmailError(false);
             passwordRef.current.value === "" ? setPasswordError(true) : setPasswordError(false);
             confirmPasswordRef.current.value === "" ? setConfPasswordError(true) : setConfPasswordError(false);
-    
+            setRecEmailError(false);
+
             if(firstNameRef.current.value === "" ||
             lastNameRef.current.value === "" || 
             emailRef.current.value === "" ||
@@ -213,7 +230,7 @@ export default function LoginModal(props){
             const user = {
                 firstName: firstNameRef.current.value,
                 lastName: lastNameRef.current.value,
-                email: emailRef.current.value,
+                email: emailRef.current.value.toLowerCase(),
                 password: passwordRef.current.value
             };
     
@@ -248,7 +265,7 @@ export default function LoginModal(props){
                 return setOpenMessage(true);
             }
             setLoading(true);
-            const signedUser = await signin({email, password});
+            const signedUser = await signin({email: email.toLowerCase(), password});
             setLoading(false);
     
             if(signedUser && signedUser.error){
@@ -267,11 +284,64 @@ export default function LoginModal(props){
 
     const handleMsgClose = e => {
         setOpenMessage(false);
+        setOpenSuccessMessage(false);
+    }
+
+    const stopForgot = e => {
+        setForgotten(false);
+        if(forgotPasswordRef.current)
+            forgotPasswordRef.current.value = ""
+    }
+
+    const getEmail = async e => {
+        if(forgotPasswordRef.current){
+            if(!/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.exec(forgotPasswordRef.current.value)){
+                setMessage("Please enter a valid recovery email");
+                setOpenMessage(true);
+                setRecEmailError(true);
+                return;
+            }
+            setRecEmailError(false);
+
+            const abortController = new AbortController();
+            const signal = abortController.signal;
+
+            const result = await getRecoveryEmail(forgotPasswordRef.current.value, signal);
+
+            if(result && result.error){
+                switch(Number(result.error)){
+                    case 1: 
+                    setMessage("No user with that email");
+                    break;
+
+                    case 2: 
+                    setMessage("Unsuccessful, please try again later.");
+                    break;
+
+                    default:
+                    setMessage("");
+                }
+
+                setOpenMessage(true);
+                setRecEmailError(true);
+            }
+
+            if(result && result.message === 'Success'){
+                setMessage("Success! please check your email inbox for the link.");
+                setOpenSuccessMessage(true);
+                closeClicked();
+            }
+        }
     }
 
     return <>
         <Snackbar open={openMessage} autoHideDuration={3000} onClose={handleMsgClose}>
             <Alert onClose={handleMsgClose} severity="warning">
+                {message}
+            </Alert>
+        </Snackbar>
+        <Snackbar open={openSuccessMessage} autoHideDuration={10000} onClose={handleMsgClose}>
+            <Alert onClose={handleMsgClose} severity="success">
                 {message}
             </Alert>
         </Snackbar>
@@ -380,6 +450,7 @@ export default function LoginModal(props){
                     type='email'
                     inputRef={emailRef}
                     error={emailError} 
+                    disabled={forgotten}
                     onChange={e=>setEmail(e.target.value)}
                     fullWidth 
                     size='small' 
@@ -394,6 +465,7 @@ export default function LoginModal(props){
                     <TextField
                     inputRef={passwordRef}
                     error={passwordError} 
+                    disabled={forgotten}
                     onChange={onPasswordChange} 
                     fullWidth 
                     type='password' 
@@ -408,14 +480,44 @@ export default function LoginModal(props){
                 <Grid item xs={12} className={classes.fields} />
 
                 {
-                    !registerState ? <> 
+                    !registerState && !forgotten ? <> 
                     <Grid item xs={6} />
                     <Grid item xs={6}>
-                        <ForgotButton>Forgot password?</ForgotButton>
+                        <ForgotButton onClick={clickForgotButton}>Forgot password?</ForgotButton>
                     </Grid>
                     <Grid item xs={12} className={classes.fields} />
                     </> : 
                     <> </>
+                }
+
+                {
+                    !registerState && forgotten ? <>
+                        <Grid item>
+                            <Typography variant='h6'>Please enter the account email below:</Typography>
+                        </Grid>
+                        <Grid item xs={12} className={classes.space} />
+                        <Grid item xs={8}>
+                            <TextField
+                            color='secondary'
+                            inputRef={forgotPasswordRef} 
+                            error={recEmailError}
+                            fullWidth variant='outlined' 
+                            size='small'/>
+                        </Grid>
+                        <Grid item xs={12} className={classes.space} />
+                        <Grid item>
+                            <Button disabled={!forgotten} className={classes.login} variant='outlined' onClick={getEmail}>
+                                Get recovery email
+                            </Button>
+                        </Grid>
+                        <Grid item xs={2} />
+                        <Grid item>
+                            <Button disabled={!forgotten} className={classes.login} variant='outlined' onClick={stopForgot}>
+                                Back
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12} />
+                    </> : <></>
                 }
 
                 {
@@ -440,29 +542,29 @@ export default function LoginModal(props){
                 {
                     registerState ? <>
                     {
-                        loading ? <CircularProgress color='primary' /> :
+                        loading && !forgotten ? <CircularProgress color='primary' /> : !forgotten ? 
                         <Grid item>
-                            <Button className={classes.login} variant='outlined' onClick={registerDone} startIcon={<CheckCircleOutline />}>
+                            <Button disabled={forgotten} className={classes.login} variant='outlined' onClick={registerDone} startIcon={<CheckCircleOutline />}>
                                 Done
                             </Button>
-                        </Grid>
+                        </Grid> : <></>
                     }
                     
                     </> : <> 
                     {
-                        loading ? <CircularProgress color='primary' /> : <>
+                        loading ? <CircularProgress color='primary' /> : !forgotten ? <>
                         <Grid item>
-                            <Button className={classes.login} variant='outlined' endIcon={<DoubleArrow />} onClick={signinUser}>
+                            <Button disabled={forgotten} className={classes.login} variant='outlined' endIcon={<DoubleArrow />} onClick={signinUser}>
                                 Signin
                             </Button>
                         </Grid>
                         <Grid item xs={2} />
                         <Grid item>
-                            <Button className={classes.login} variant='outlined' endIcon={<Assignment />} onClick={onRegisterClick}>
+                            <Button disabled={forgotten} className={classes.login} variant='outlined' endIcon={<Assignment />} onClick={onRegisterClick}>
                                 Register
                             </Button>
                         </Grid>
-                    </>
+                        </> : <> </>
                     }
                     </>
                 }

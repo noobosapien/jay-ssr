@@ -91,10 +91,69 @@ const getMostBrought = async(signal) => {
     }
 }
 
+const getRecoveryEmail = async(email, signal) => {
+    try{
+        let response = await fetch(`/api/getForgotPWLink?email=${email}`,
+        {
+            method: 'GET',
+            signal,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+        });
+    
+        return await response.json();
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const getFPValid = async (code, signal) => {
+    try{
+        let response = await fetch('/api/getForgotPWLink',
+        {
+            method: 'POST',
+            signal,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({code})
+        });
+    
+        return await response.json();
+    }catch(e){
+
+    }
+}
+
+const sendNewPassword = async (code, password, retype, signal) => {
+    try{
+        let response = await fetch(`/api/CPWFL?c=${code}`,
+        {
+            method: 'PUT',
+            signal,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({password, retype})
+        });
+    
+        return await response.json();
+    }catch(e){
+
+    }
+}
+
 export {
     getSearch,
     registerUser,
     getLatest,
     getHottest,
-    getMostBrought
+    getMostBrought,
+    getRecoveryEmail,
+    getFPValid,
+    sendNewPassword
 }

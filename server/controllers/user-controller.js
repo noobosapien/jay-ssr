@@ -1,7 +1,11 @@
+const config = require('../config/keys.js');
+
 const User = require('../models/user-model');
 const Order = require('../models/order-model');
-const extend = require('lodash/extend');
 const errorHandler = require('../helpers/dbErrorHandler');
+const sgMail = require('@sendgrid/mail');
+var encrypter = require('object-encrypter');
+var engine = encrypter(config.forgotSecret, {ttl: true, outputEncoding: 'hex'});
 
 //need for registering
 const create = async (req, res, next) => {
@@ -230,6 +234,166 @@ const isAnAdmin = async (req, res, next) => {
     }
 }
 
+const getRCPWL = async (req, res, next) => {
+    try{
+        const user = await User.findOne({email: req.query.email});
+        if(!user){
+            return res.json({
+                error: 1,
+                message: "No user with that email"
+            });
+        }
+
+        const obj = {_id: user._id};
+
+        var hex = engine.encrypt(obj, 1800000);
+
+        const msg = {
+            to: user.email,
+            from: 'migar256@gmail.com',
+            subject: 'Sending with SendGrid is Fun',
+            text: 'and easy to do anywhere, even with Node.js',
+            html: `this link is only valid for 30 minutes
+            <a href='http://localhost:3000/forgotPW/${hex}'>localhost:3000/forgotPW?c=${hex}</a>`,
+          }
+          
+        const result = await sgMail.send(msg);
+
+        if(result[0].statusCode === 202){
+            return res.json({
+                message: "Success"
+            });
+        }else{
+            return res.json({
+                error: 2,
+                message: "Failed"
+            });
+        }
+        
+
+    }catch(e){
+        return res.json({
+            e
+        });
+    }
+    
+}
+
+const postRCPWL = async (req, res, next) => {
+    try{
+        const code = req.body.code;
+
+        try{
+            const obj = engine.decrypt(code);
+
+            if(!obj){
+                return res.json({
+                    error: 2,
+                    isValid: false
+                });
+            }
+            console.log(obj);
+
+            const user = await User.findById(obj._id);
+            if(!user){
+                return res.json({
+                    error: 3,
+                    isValid: false
+                });
+            }
+
+            if(user.forgottenLinks.includes(code)){
+                return res.json({
+                    error: 4,
+                    isValid: false
+                });
+            }
+            
+            user.forgottenLinks.push(code);
+            await user.save();
+
+            const sendObj = {_id: user._id};
+            var hex = engine.encrypt(sendObj, 1800000);
+
+            return res.json({
+                code: hex,
+                isValid: true
+            });
+
+        }catch(e){
+            return res.json({
+                error: 1,
+                isValid: false
+            });
+        }
+
+
+    }catch(e){
+        return res.json({
+            e
+        });
+    }
+}
+
+const cpwfl = async (req, res, next) => {
+    try{
+        const code = req.query.c;
+
+        if(!req.body && !req.body.password && !req.body.retype){
+            return res.json({
+                error: 2,
+                done: false
+            });
+        }
+
+        try{
+            const obj = engine.decrypt(code);
+
+            const user = await User.findById(obj._id);
+
+            if(!user){
+                return res.json({
+                    error: 4,
+                    done: false
+                });
+            }
+
+            if(user.successLinks.includes(code)){
+                return res.json({
+                    error: 6,
+                    done: false
+                });
+            }
+
+            if(req.body.password !== req.body.retype){
+                return res.json({
+                    error: 5,
+                    done: false
+                });
+            }
+
+            user.successLinks.push(code);
+            user.password = req.body.password;
+            await user.save();
+
+            return res.json({
+                done: true
+            });
+
+        }catch(e){
+            return res.json({
+                error: 3,
+                done: false
+            });
+        }
+    }catch(e){
+        return res.json({
+            error: 1,
+            done: false
+        });
+    }
+}
+
 module.exports = { 
     create, 
     list, 
@@ -243,5 +407,8 @@ module.exports = {
     setUserBillingAddress,
     getOrders,
     getOrderDetails,
-    isAnAdmin
+    isAnAdmin,
+    getRCPWL,
+    postRCPWL,
+    cpwfl
 };

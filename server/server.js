@@ -5,6 +5,9 @@ const app = require('./express');
 const User = require('./models/user-model');
 const dbInit = require('./helpers/dbInit');
 const passportInit = require('./helpers/passportInit');
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(config.sendgridAPI);
 
 dbInit.setMongoDB();
 
