@@ -292,7 +292,6 @@ const postRCPWL = async (req, res, next) => {
                     isValid: false
                 });
             }
-            console.log(obj);
 
             const user = await User.findById(obj._id);
             if(!user){

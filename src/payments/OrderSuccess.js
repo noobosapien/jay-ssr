@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams, useHistory } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';

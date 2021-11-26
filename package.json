@@ -60,7 +60,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "set INLINE_RUNTIME_CHUNK=false&&react-scripts build && mv build/index.html build/_index.html",
-    "test": "react-scripts test",
+    "test": "jest test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -80,5 +80,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "puppeteer": "^11.0.0"
   }
 }
