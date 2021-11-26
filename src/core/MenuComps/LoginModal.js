@@ -319,7 +319,7 @@ export default function LoginModal(props){
                     break;
 
                     default:
-                    setMessage("");
+                    setMessage("Unsuccessful, please try again later.");
                 }
 
                 setOpenMessage(true);

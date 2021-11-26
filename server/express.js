@@ -19,7 +19,7 @@ const paymentRoutes = require( './routes/payment-routes');
 const adminRoutes = require('./routes/admin-routes');
 const webhookRoutes = require('./routes/webhook-routes');
 const path = require('path');
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
 const app = express();
 
@@ -52,7 +52,7 @@ async function handleRender(req, res, next){
     const context = {};
     const sheets = new ServerStyleSheets();
 
-    const html = ReactDOMServer.renderToString(
+    const html = ReactDOMServer.renderToNodeStream(
         sheets.collect(
             <ThemeProvider theme={theme}>
             <StaticRouter location={req.url} context={context}>
@@ -77,18 +77,26 @@ async function renderFullPage(html, css){
         const data = await fs.readFile(path.resolve('../build/_index.html'), 'utf8');
 
         var result = "";
+        let chunks = [];
+
+        html.on('readable', () => {
+            let chunk;
+            while (null !== (chunk = html.read())) {
+                chunks.push(chunk.toString('utf8'));
+            }
+        });
         
         result = await data.replace(
         '<div id="root"></div>',
         `<div id="root">
-            ${html}
-        )}</div>`);
+            ${chunks}
+        </div>`);
 
         result = await result.replace(
         '<style id="jss-server-side"></style>',
         `<style id="jss-server-side">
             ${css}
-        )}</style>`);
+        </style>`);
 
         return result;
     }catch(e){

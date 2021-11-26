@@ -74,10 +74,10 @@ const createPaymentIntent = async (req, res, next) => {
         payment_method_types: ["card"],
         line_items: [...lineItems],
         mode: "payment",
-        // success_url: "https://www.jaytronics.co.nz/ordersuccess/{CHECKOUT_SESSION_ID}",
-        // cancel_url: "https://www.jaytronics.co.nz/cart",
-        success_url: "https://localhost:3000/ordersuccess/{CHECKOUT_SESSION_ID}",
-        cancel_url: "https://localhost:3000/cart",
+        success_url: "https://www.jaytronics.co.nz/ordersuccess/{CHECKOUT_SESSION_ID}",
+        cancel_url: "https://www.jaytronics.co.nz/cart",
+        // success_url: "https://localhost:3000/ordersuccess/{CHECKOUT_SESSION_ID}",
+        // cancel_url: "https://localhost:3000/cart",
         customer_email: user.email,
       });
     
