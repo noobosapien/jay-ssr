@@ -254,7 +254,7 @@ const getRCPWL = async (req, res, next) => {
             subject: 'Sending with SendGrid is Fun',
             text: 'and easy to do anywhere, even with Node.js',
             html: `this link is only valid for 30 minutes
-            <a href='http://localhost:3000/forgotPW/${hex}'>localhost:3000/forgotPW?c=${hex}</a>`,
+            <a href='https://jaytronics.co.nz:3000/forgotPW/${hex}'>jaytronics.co.nz:3000/forgotPW?c=${hex}</a>`,
           }
           
         const result = await sgMail.send(msg);

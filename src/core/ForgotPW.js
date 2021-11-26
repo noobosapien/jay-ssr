@@ -62,7 +62,7 @@ export default function ForgotPW(props){
         if(userContext.user){
             history.push('/');
         }
-    }, [userContext]);
+    }, [userContext.user, history]);
 
     useEffect(() => {
         const getValid = async () => {
